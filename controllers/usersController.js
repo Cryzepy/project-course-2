@@ -78,23 +78,84 @@ const usersController = {
 		})
 
 	},
+	updateUser: (req, res) => {
+		if(!getAccess(req.params.keyaccess,res)) return
+
+		const payload = req.body
+
+		usersModel.getAllUsers((err,data) => {
+
+			let roleTarget;
+			const lengthAdmin = data.filter(row => {
+				if(row.username === payload.username){
+					roleTarget = row.role
+				}
+				return row.role === "admin"
+			})
+
+			if(lengthAdmin.length <= 1 && roleTarget == "admin"){
+				res.json({
+					status: 500,
+					message: "tidak bisa menghapus admin terakhir"
+				})
+				return
+			}
+			
+			usersModel.updateUser(payload,(err) => {
+				if(err){
+					res.json({
+						status: 500,
+						message: err
+					})
+				}else{
+					res.json({
+						status: 201,
+						message: payload.username + " sukses sunting"
+					})
+				}
+			})
+		})
+
+
+	},
 	deleteUser: (req, res) => {
 		if(!getAccess(req.params.keyaccess,res)) return
 		const username = req.body.username
 
-		usersModel.deleteUser(username,(err) => {
-			if(err){
+		usersModel.getAllUsers((err,data) => {
+
+			let roleTarget;
+			const lengthAdmin = data.filter(row => {
+				console.log(row.username,username)
+				if(row.username === username){
+					roleTarget = row.role
+				}
+				return row.role === "admin"
+			})
+
+			if(lengthAdmin.length <= 1 && roleTarget == "admin"){
 				res.json({
 					status: 500,
-					message: err
+					message: "tidak bisa menghapus admin terakhir"
 				})
-			}else{
-				res.json({
-					status: 201,
-					message: `${username} sukses dihapus`
-				})
+				return
 			}
+
+			usersModel.deleteUser(username,(err) => {
+				if(err){
+					res.json({
+						status: 500,
+						message: err
+					})
+				}else{
+					res.json({
+						status: 201,
+						message: `${username} sukses dihapus`
+					})
+				}
+			})
 		})
+
 
 	},
 	authLogin: (req, res) => {

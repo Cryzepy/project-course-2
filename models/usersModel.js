@@ -76,7 +76,24 @@ const usersModel = {
 			db.close()
 		    call(err ? err : null, err ? null : rows)
 		});
-	}
+	},
+	updateUser: (payload,call) => {
+
+		const newRole = payload.role === "user" ? "admin" : "user"
+		const db = new sqlite3.Database(db_path, (err) => {
+			if(err){
+				call(err)
+				return
+			}
+		})
+
+		db.run("CREATE TABLE IF NOT EXISTS users (username varchar(64) primary key not null, password varchar(64) not null, role varchar(8) not null)")
+
+		db.all(`UPDATE USERS SET ROLE = '${newRole}' WHERE USERNAME = '${payload.username}'`, err => {
+			db.close()
+		    call(err ? err : null)
+		});	
+	},
 
 }
 

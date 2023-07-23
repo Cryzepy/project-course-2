@@ -34,7 +34,7 @@ const videosController = {
 	createVideo: (req, res) => {
 		if(!getAccess(req.params.keyaccess,res)) return
 		
-		if(!req.body.url){
+		if(!req.body.payload){
 			res.json({
 				status: 500,
 				message: "payload tidak dikirim"
@@ -42,13 +42,14 @@ const videosController = {
 			return
 		}
 
-		videosModel.createVideo(req.body.url,(err) => {
+		videosModel.createVideo(req.body.payload,(err) => {
 			if(err){
 				res.json({
 					status: 500,
 					message: err
 				})
 			}else{
+
 				res.json({
 					status: 201,
 					message: "video sukses ditambahkan"

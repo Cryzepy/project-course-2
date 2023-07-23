@@ -10,14 +10,14 @@ const videosModel = {
 			}
 		})
 
-		db.run("CREATE TABLE IF NOT EXISTS videos (url varchar(32) primary key not null)")
+		db.run("CREATE TABLE IF NOT EXISTS videos (url varchar(32) primary key not null, googleForm varchar(128))")
 
 		db.all('SELECT * FROM videos', (err, rows) => {
 			db.close()
 		    call(err ? err : null, err ? null : rows)
 		});
 	},
-	createVideo: (url,call) => {
+	createVideo: (payload,call) => {
 		const db = new sqlite3.Database(db_path, (err) => {
 			if(err){
 				call(err)
@@ -25,9 +25,9 @@ const videosModel = {
 			}
 		})
 
-		db.run("CREATE TABLE IF NOT EXISTS videos (url varchar(32) primary key not null)")
+		db.run("CREATE TABLE IF NOT EXISTS videos (url varchar(32) primary key not null, googleForm varchar(128))")
 
-		db.all(`INSERT INTO videos VALUES ('${url}')`, err => {
+		db.all(`INSERT INTO videos VALUES ('${payload.url}', ${payload.googleForm})`, err => {
 			db.close()
 		    call(err ? err : null)
 		});	
@@ -40,7 +40,8 @@ const videosModel = {
 			}
 		})
 
-		db.run("CREATE TABLE IF NOT EXISTS videos (url varchar(32) primary key not null)")
+		db.run("CREATE TABLE IF NOT EXISTS videos (url varchar(32) primary key not null, googleForm varchar(128))")
+
 
 		db.all(`delete from videos where url = '${url}'`, err => {
 			db.close()
