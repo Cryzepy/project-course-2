@@ -11,6 +11,7 @@ import ErrorPage from "../pages/404.jsx"
 
 import tokenUtil from "../utils/api/token.js"
 import videoUtil from "../utils/api/video.js"
+import getTitle from "../utils/utility/getVideoTitle.js"
 
 const CoursePage = () => {
 
@@ -24,6 +25,10 @@ const CoursePage = () => {
 
    const [username, setUsername] = useState("")
    const [data, setData] = useState(false)
+   const [title,setTitle] = useState({
+    id: null,
+    element: null
+   })
 
 
    
@@ -71,7 +76,6 @@ const CoursePage = () => {
          })
      }
 
-      
    },[])
 
 	return (
@@ -97,13 +101,20 @@ const CoursePage = () => {
                      data.map((id, index) => {
                         const linkVideo = `https://www.youtube.com/watch?v=${id.url}`
                         const linkThumb = `https://img.youtube.com/vi/${id.url}/maxresdefault.jpg`
+                        const idVideo = `video-title-${index}`
+
+                        const element = $(`#video-title-${index}`)[0]
+
+                        getTitle(id.url,element)
+
                         return (
                            <div className="course" key={index}>
                               <a href={linkVideo} target="_blank">
                                  <img src={linkThumb} alt="thumbnail"/>
                               </a>
+                              <h6 className="video-title" id={idVideo}>Judul Tidak Tersedia</h6>
                               <div className="input-file">
-                                 <input type="file" className="inp-tugas" id="inp-tugas-<%=index%>" />
+                                 <input type="file" className="inp-tugas" />
                                  <button className="btn btn-danger btn-close-addfile">tutup</button>
                                  <button className="btn btn-success" id="btn-send-tugas">kirim</button>
                               </div>

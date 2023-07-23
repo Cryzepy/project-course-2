@@ -6,8 +6,10 @@ import Footer from "../components/footer.jsx"
 import BtnLogout from "../components/btnlogout.jsx"
 import ErrorPage from "../pages/404.jsx"
 import "../css/admin.css"
+
 import UserList from "../components/userList.jsx"
 import VideoList from "../components/videoList.jsx"
+import TugasList from "../components/tugasList.jsx"
 
 import tokenUtil from "../utils/api/token.js"
 import userUtil from "../utils/api/user.js"
@@ -26,14 +28,13 @@ const AdminPage = () => {
     if (parts.length === 2) return parts.pop().split(';').shift();
   }
 
-  const tabs = ["user","video","file upload"]
+  const tabs = ["user","video"]
 
   const [tabActive,setTabActive] = useState(tabs[0])
-
   const [username,setUsername] = useState("")
-
   const [users,setUsers] = useState(false)
   const [videos,setVideos] = useState(false)
+  const [modeView, setModeView] = useState("list") // tugas
 
   useEffect(() => {
     const token = getCookie("token")
@@ -61,24 +62,33 @@ const AdminPage = () => {
         </header>
 
         <main>
-          <div className="selected-menu">
-            {
-              tabs.map((tab,index) => {
-                const cl = tabActive == tab ? "active" : ""
-                return <span className={cl} key={index} onClick={function(e){
-                  setTabActive(tab)
-                  getVideos()
-                }}>{tab}</span>
-              })
-            }
-          </div>
-          { tabActive === tabs[0] && <UserList users={users} setUsers={setUsers} />}
-          { tabActive === tabs[1] && <VideoList videos={videos} setVideos={setVideos} />}
-    </main>
-    <Footer />
+          {
+            modeView === "list" && (
+              <>
+              <div className="selected-menu">
+                {
+                  tabs.map((tab,index) => {
+                    const cl = tabActive == tab ? "active" : ""
+                    return <span className={cl} key={index} onClick={function(e){
+                      setTabActive(tab)
+                      getVideos()
+                    }}>{tab}</span>
+                  })
+                }
+              </div>
+              { tabActive === tabs[0] && <UserList users={users} setUsers={setUsers} setModeView={setModeView} />}
+              { tabActive === tabs[1] && <VideoList videos={videos} setVideos={setVideos} />}
+              </>
+            )
+          }
+
+          {
+            modeView === "tugas" && (<TugasList />)
+          }
+        </main>
+        <Footer />
         </>
       )
-
     }
     </>
 	)

@@ -66,7 +66,7 @@ const userAPI = {
               alert(response.message)
               getAll({setUsers: payload.setUsers})
              }else{
-             	alert("terjadi error saat penghapusan akun")
+             	alert(response.message)
              }
           },
           error: function(error) {
@@ -91,9 +91,27 @@ const userAPI = {
         error: function(error) {
           alert(error.message)
         }
-      });
-
+      })
+  },
+  updateUser: function(payload) {
+    $.ajax({
+      url: "http://localhost:3001/admin/savxr6wecvrt46rt376rtb3y/updateUser",
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(payload),
+      success: function(response) {
+        if(response.status == 201){
+          alert("sukses menyunting " + payload.username)
+        }else{
+          alert(response.message)
+        }
+      },
+      error: function(error) {
+        alert(error.message)
+      }
+      })
   }
+
 }
 
 export default userAPI
