@@ -26,7 +26,7 @@ const VideoList = ({videos,setVideos}) => {
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">ID Video</th>
-                          <th scope="col">link tugas</th>
+                          <th scope="col" className="d-none d-md-block">link tugas</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -38,7 +38,7 @@ const VideoList = ({videos,setVideos}) => {
                             <tr key={index}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{video.url}</td>
-                                <td><a href={video.linkTugas} target='_blank'>{video.linkTugas}</a></td>
+                                <td className="d-none d-md-block"><a href={video.linkTugas} target='_blank'>{video.linkTugas}</a></td>
                                 <td>
                                    <button className="btn btn-danger" onClick={function(){
                                     videoUtil.delete(video.url,setVideos)

@@ -2,7 +2,6 @@ import $ from "jquery"
 import setUser from "../utils/api/user.js"
 
 const UserList = (props) => {
-
 	return (<>
             <hr className="hr1" />
                <div className="input">
@@ -28,7 +27,7 @@ const UserList = (props) => {
                       <tr>  
                         <th scope="col">No</th>
                         <th scope="col">Username</th>
-                        <th scope="col">Password</th>
+                        <th scope="col" className="d-none d-sm-block">Password</th>
                         <th scope="col">Role</th>
                         <th scope="col">Action</th>
                       </tr>
@@ -41,7 +40,7 @@ const UserList = (props) => {
                           <tr key={index}>
                               <th scope="row">{index + 1}</th>
                               <td>{user.username}</td>
-                              <td>{user.password}</td>
+                              <td className="d-none d-sm-block">{user.password}</td>
                               <td>
                                  <select id="role" className="btn btn-secondary btn-sm" onChange={function(e){
                                   setUser.updateUser({
