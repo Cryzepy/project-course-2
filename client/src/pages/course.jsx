@@ -25,11 +25,8 @@ const CoursePage = () => {
 
    const [username, setUsername] = useState("")
    const [data, setData] = useState(false)
-   const [title,setTitle] = useState({
-    id: null,
-    element: null
-   })
-   
+   const [title,setTitle] = useState("Judul Tidak Tersedia")
+
    useEffect(() => {
 
       const token = getCookie("token")
@@ -37,14 +34,11 @@ const CoursePage = () => {
       tokenUtil.getToken(token,{ navigate, setUsername })
       videoUtil.getAll(setData)
 
-      document.querySelectorAll(".video-title").forEach((el,index) => {
-        getTitle(data[index].url,el)
-       })
 
    },[])
 
    document.querySelectorAll(".video-title").forEach((el,index) => {
-    getTitle(data[index].url,el)
+    getTitle(data[index].url,el,setTitle)
    })
 
 	return (
