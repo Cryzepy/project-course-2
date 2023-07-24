@@ -11,7 +11,6 @@ import ErrorPage from "../pages/404.jsx"
 
 import tokenUtil from "../utils/api/token.js"
 import videoUtil from "../utils/api/video.js"
-import getTitle from "../utils/utility/getVideoTitle.js"
 
 const CoursePage = () => {
 
@@ -32,30 +31,25 @@ const CoursePage = () => {
       const token = getCookie("token")
 
       tokenUtil.getToken(token,{ navigate, setUsername })
-      videoUtil.getAll(setData)
 
+      videoUtil.getAll(setData)
 
    },[])
 
 
-   if(data){
-    if(data.length){
-     document.querySelectorAll(".video-title").forEach((el,index) => {
-      getTitle(data[index].url,el,setTitle)
-     })
-    }
-   }
+
 
 
 
 	return (
-      <>
+      <>  
+            <BtnLogout size="small" />
             <header>
                <span className="brand">
                   <img src={logo} alt="Logo PKM PM 1" />
                   <span className="txt-brand">PKM-PM | Universitas Muhammadiyah Malang</span>
                </span>
-               <BtnLogout username={username} />
+               <BtnLogout size="large" />
             </header>
       
             <div className="courses-container">
@@ -76,7 +70,6 @@ const CoursePage = () => {
                               <a href={linkVideo} target="_blank">
                                  <img src={linkThumb} alt="thumbnail"/>
                               </a>
-                              <h6 className="video-title" id={idVideo}>Judul Tidak Tersedia</h6>
                               <div className={inpClassName} style={{
                                 display: "none"
                               }}>

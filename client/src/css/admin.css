@@ -31,7 +31,8 @@ header {
 	justify-content: space-between;
 	align-items: center;
 	border-radius: 2px;
-	box-shadow: -8px 8px 13px rgba(0,0,0,0.2)
+	box-shadow: -8px 8px 13px rgba(0,0,0,0.2);
+	gap: 2.5rem;
 }
 
 .brand {
