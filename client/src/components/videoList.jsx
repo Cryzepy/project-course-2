@@ -5,9 +5,16 @@ const VideoList = ({videos,setVideos}) => {
 	return (<>
             <hr className="hr1" />
                  <div className="input">
-                    <input type="text" id="txt-url" />
+                    <input type="text" id="txt-url" placeholder="id youtube" />
+                    <input type="text" id="txt-link-google-form" placeholder="link tugas" />
                     <button className="btn btn-primary" id="btn-add-user" onClick={function(){
-                      videoUtil.create($("#txt-url").val(),setVideos,[() => $("#txt-url").val("")])
+                      videoUtil.create({
+                        url: $("#txt-url").val(),
+                        googleForm: $("#txt-link-google-form").val()
+                      },setVideos,[() => {
+                        $("#txt-url").val("")
+                        $("#txt-link-google-form").val("")
+                      }])
                     }}>add video id</button>
                  </div>
       
@@ -19,6 +26,7 @@ const VideoList = ({videos,setVideos}) => {
                         <tr>
                           <th scope="col">No</th>
                           <th scope="col">ID Video</th>
+                          <th scope="col">link tugas</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
@@ -30,6 +38,7 @@ const VideoList = ({videos,setVideos}) => {
                             <tr key={index}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{video.url}</td>
+                                <td><a href={video.linkTugas} target='_blank'>{video.linkTugas}</a></td>
                                 <td>
                                    <button className="btn btn-danger" onClick={function(){
                                     videoUtil.delete(video.url,setVideos)

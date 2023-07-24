@@ -6,8 +6,8 @@ const UserList = (props) => {
 	return (<>
             <hr className="hr1" />
                <div className="input">
-                  <input type="text" id="username" />
-                  <input type="text" id="password" />
+                  <input type="text" id="username" placeholder="username" />
+                  <input type="text" id="password" placeholder="password" />
                   <button className="btn btn-primary" id="btn-add-user" onClick={function(e){
                     const payload = {
                       username: $("#username").val(),
@@ -31,14 +31,12 @@ const UserList = (props) => {
                         <th scope="col">Password</th>
                         <th scope="col">Role</th>
                         <th scope="col">Action</th>
-                        <th scope="col">Tugas</th>
                       </tr>
                     </thead>
                     <tbody>
     
                     {
                       props.users.map((user,index) => {
-                        console.log(user)
                         return (
                           <tr key={index}>
                               <th scope="row">{index + 1}</th>
@@ -47,8 +45,10 @@ const UserList = (props) => {
                               <td>
                                  <select id="role" className="btn btn-secondary btn-sm" onChange={function(e){
                                   setUser.updateUser({
-                                    role: e.target.value == "user" ? "admin" : "user",
-                                    username: user.username
+                                    username: user.username,
+                                    set: {
+                                      role: user.role == "user" ? "admin" : "user"
+                                    }
                                   })
                                  }}>
                                     <option value="admin" selected={user.role === "admin" ? true : false}>admin</option>
@@ -59,11 +59,6 @@ const UserList = (props) => {
                                  <button className="btn btn-danger" onClick={function(){
                                   setUser.delete(user.username,{setUsers: props.setUsers})
                                  }}>delete</button>
-                              </td>
-                              <td>
-                                <button className="btn btn-warning text-white" onClick={function(){
-                                  props.setModeView("tugas")
-                                }}>3 Tugas</button>
                               </td>
                             </tr>
                         )

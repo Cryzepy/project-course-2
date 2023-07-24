@@ -1,19 +1,17 @@
 import $ from "jquery"
 
+import vbl from "../variabel.js"
+
 const userAPI = {
 	getAll: payload => {
 		$.ajax({
 	      type: "GET",
-	      url: "http://localhost:3001/admin/savxr6wecvrt46rt376rtb3y/users/",
+	      url: `${vbl.serverURL}/users/`,
 	      success: function(response) {
-	         if(response.status == 201){
-	          payload.setUsers(response.data)
-	         }else{
-	          alert(response.message)
-	         }
+          payload.setUsers(response.data)
 	      },
 	      error: function(error) {
-	         alert(error.message)
+          alert(error.responseJSON.message || "network error")
 	      }
 	    })
 	},
@@ -37,19 +35,15 @@ const userAPI = {
         
         $.ajax({
           type: "POST",
-          url: "http://localhost:3001/admin/savxr6wecvrt46rt376rtb3y/createUser/",
+          url: `${vbl.serverURL}/createUser/`,
           data: { username: input.username, password: input.password },
           success: function(response) {
-             if(response.status == 201){
-              alert(response.message)
-              getAll({setUsers: payload.setUsers})
-              success()
-             }else{
-             	alert("gunakan username lain")
-             }
+            alert(response.message)
+            getAll({setUsers: payload.setUsers})
+            success()
           },
           error: function(error) {
-             alert(error.message)
+            alert(error.responseJSON.message || "failed create account")
           }
         })
 	},
@@ -59,57 +53,63 @@ const userAPI = {
 		
 		$.ajax({
           type: "DELETE",
-          url: "http://localhost:3001/admin/savxr6wecvrt46rt376rtb3y/deleteUser/",
+          url: `${vbl.serverURL}/deleteUser/`,
           data: { username },
           success: function(response) {
-             if(response.status == 201){
-              alert(response.message)
-              getAll({setUsers: payload.setUsers})
-             }else{
-             	alert(response.message)
-             }
+            alert(response.message)
+            getAll({setUsers: payload.setUsers})
           },
           error: function(error) {
-             alert(error.message)
+            if(error.responseJSON){
+              if(error.responseJSON.message){
+                alert(error.responseJSON.message)
+                return
+              }
+            }
+            alert("network error")
           }
         })
 	},
 	auth: function (payload,config) {
      $.ajax({
-        url: "http://localhost:3001/admin/savxr6wecvrt46rt376rtb3y/authLogin",
+        url: `${vbl.serverURL}/authLogin`,
         type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(payload),
+        data: {
+          ...payload,
+        },
         success: function(response) {
-          if(response.status == 201){
-            document.cookie = `token=${response.configCookie.token};http-only=true;secure=true;max-age=${response.configCookie.maxAge}`
-            config.navigate(response.configCookie.token === "admin" ? "/admin" : "course")
-          }else{
-            alert(response.message)
-          }
+          document.cookie = `token=${response.createToken.name};http-only=true;secure=true;max-age=${response.createToken.maxAge}`
+          config.navigate(response.role === "admin" ? "/admin" : "course")
         },
         error: function(error) {
-          alert(error.message)
+          if(error.responseJSON){
+            if(error.responseJSON.message){
+              alert(error.responseJSON.message)
+              return
+            }
+          }
+          alert("network error")
         }
       })
   },
   updateUser: function(payload) {
     $.ajax({
-      url: "http://localhost:3001/admin/savxr6wecvrt46rt376rtb3y/updateUser",
+      url: `${vbl.serverURL}/updateUser`,
       type: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify(payload),
+      data: payload,
       success: function(response) {
-        if(response.status == 201){
-          alert("sukses menyunting " + payload.username)
-        }else{
-          alert(response.message)
-        }
+        alert("sukses menyunting " + payload.username)
       },
       error: function(error) {
-        alert(error.message)
+        if(error.responseJSON){
+          if(error.responseJSON.message){
+            alert(error.responseJSON.message)
+            return
+          }
+        }
+        alert("network error")
       }
-      })
+    })
   }
 
 }

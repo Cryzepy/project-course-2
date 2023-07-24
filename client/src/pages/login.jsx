@@ -6,6 +6,7 @@ import tokenUtil from "../utils/api/token.js"
 import userUtil from "../utils/api/user.js"
 
 import "../css/login.css"
+import logo from "../images/Logo PKM.png"
 
 const LoginPage = () => {
 
@@ -28,7 +29,7 @@ const LoginPage = () => {
          username: $("#username").val(),
          password: $("#password").val()
       }
-
+      
       userUtil.auth(payload,{ navigate })
 
    }
@@ -36,9 +37,9 @@ const LoginPage = () => {
 	return (
       <div className="center">
          <div className="container">
-            <div className="text">
-               Form Login
-            </div>
+          <div className="brand d-flex justify-content-center">
+            <img src={logo} alt="logo" />
+          </div>
             <div className="form">
                <div className="data">
                   <label>Username</label>

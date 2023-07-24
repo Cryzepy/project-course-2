@@ -35,7 +35,7 @@ header {
 }
 
 .brand img {
-	width: 65px
+	width: calc(9vw + 3vh)
 }
 
 .brand .txt-brand {
@@ -81,7 +81,7 @@ header {
 	gap: 2.5rem 1rem;
 	padding: 3rem 1rem;
 	justify-content: space-evenly;
-	align-items: center;
+	align-items: flex-start;
 }
 
 .course {
@@ -91,6 +91,7 @@ header {
 	justify-content: center;
 	align-items: center;
 	max-width: 300px;
+	height: 100%;
 	
 }
 
@@ -111,26 +112,22 @@ h6.video-title {
 	display: flex;
 	align-items: center;
 	gap: 3px;
+	width: 100%;
 }
 
-.input-file input {
-	width: 75%;
-	outline: none
-}
-.input-file input::file-selector-button {
-	margin-right: 20px;
-	border: none;
-	background: #084cdf;
-	padding: 5px 20px;
-	box-sizing: border-box;
-	border-radius: 4px;
-	color: #fff;
-	cursor: pointer;
-	transition: background .2s ease-in-out;
+.input-file .send-data {
+	width: 75%	
 }
 
-.input-file button {
-	width: 25%	
+.input-file .send-data button {
+	width: 100%	
+}
+
+.input-file > button:last-child {
+	width: 25%;
+}
+
+.submit-tugas {
 }
 
 @media only screen and (max-width: 576px){

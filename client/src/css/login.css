@@ -23,6 +23,10 @@ body{
   transform: translate(-50%, -50%);
 }
 
+.brand img {
+  width: calc(9vw + 3vh)
+}
+
 .container{
   display: block;
   background: #fff;

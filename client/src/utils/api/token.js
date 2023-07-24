@@ -1,43 +1,28 @@
 import $ from "jquery"
 
+import vbl from "../variabel.js"
+
 const tokenAPI = {
 
 	getToken: (token,payload) => {
 		$.ajax({
-	      type: "GET",
-	      url: `http://localhost:3001/admin/savxr6wecvrt46rt376rtb3y/token?search=${token}`,
+	      type: "POST",
+	      url: `${vbl.serverURL}/token`,
+	      data: { token },
 	      success: function(response) {
-		      	if(response.status == 200){
-	         $.ajax({
-	          type: "GET",
-	          url: `http://localhost:3001/admin/savxr6wecvrt46rt376rtb3y/user?username=${response.data[0].username}`,
-	          success: function(response) {
-	             if(response.status == 201){
-	              if(response.data[0].role == "admin"){
-	              	if(payload.setUsername){
-	                	payload.setUsername(response.data[0].username)
-	              	}
-	                payload.navigate("/admin")
-	              }else if(response.data[0].role == "user"){
-	              	if(payload.setUsername){
-	                	payload.setUsername(response.data[0].username)
-	              	}
-	                payload.navigate('/course')
-	               }
-	             }else{
-	              payload.navigate("/")
-	             }
-	          },
-	          error: function(error) {
-	             payload.navigate("/")
-	          }
-	        })
-	       }else{
-	        payload.navigate("/")
-	       } 
+			if(response.data.role == "admin"){
+				if(payload.setUsername){
+					payload.setUsername(response.data.username)
+				}
+				payload.navigate("/admin")
+			}else if(response.data.role == "user"){
+				if(payload.setUsername){
+					payload.setUsername(response.data.username)
+				}
+				payload.navigate('/course')
+			}
 	      },
 	      error: function(error) {
-	      	alert(error.message)
 	      	payload.navigate("/")
 	      }
 	    })
@@ -46,8 +31,8 @@ const tokenAPI = {
 	deleteToken: (token,payload) => {
 		
 		$.ajax({ 
-			type: "DELETE",
-			url: `http://localhost:3001/admin/savxr6wecvrt46rt376rtb3y/deleteToken?target=${token}`
+			type: "POST",
+			url: `${vbl.serverURL}/updateUser`
         })
 
         document.cookie = "token=;max-age=0"

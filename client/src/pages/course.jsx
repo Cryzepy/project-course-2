@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import "../css/course.css"
-import logo from "../images/Logo PKM PM 1.jpg"
+import logo from "../images/Logo PKM.png"
 
 import Footer from "../components/footer.jsx"
 import BtnLogout from "../components/btnlogout.jsx"
@@ -53,37 +53,13 @@ const CoursePage = () => {
             $(".btn-submit").show()
             $(".input-file").hide()
          })
-
-         $("#btn-send-tugas").click(function(){
-            const file = $(this).prevAll(".inp-tugas")
-            const data = file[0].files[0]
-            const formData = new FormData()
-            formData.append("file",data)
-
-            $.ajax({
-               type: "PUT",
-               url: "/uploads/tugas",
-               data: formData,
-               processData: false,
-               contentType: false,
-               success: function(response) {
-                   alert('File uploaded successfully!');
-               },
-               error: function(error) {
-                   alert('Error uploading file.');
-               }
-            })
-         })
+ 
      }
 
    },[])
 
 	return (
       <>
-      {
-         data == false ? <ErrorPage /> :
-         (
-            <>
             <header>
                <span className="brand">
                   <img src={logo} alt="Logo PKM PM 1" />
@@ -114,11 +90,21 @@ const CoursePage = () => {
                               </a>
                               <h6 className="video-title" id={idVideo}>Judul Tidak Tersedia</h6>
                               <div className="input-file">
-                                 <input type="file" className="inp-tugas" />
-                                 <button className="btn btn-danger btn-close-addfile">tutup</button>
-                                 <button className="btn btn-success" id="btn-send-tugas">kirim</button>
+                              {
+                                id.linkTugas && (
+                                  <a href={id.linkTugas} className="button send-data" target="_blank">
+                                    <button className="btn btn-success" id="btn-send-tugas">kirim</button>
+                                  </a>
+                                )
+                              }
+
+                              {
+                                !id.linkTugas && ( <a className="btn btn-success button send-data" id="btn-send-tugas">Tidak Ada Tugas</a> )
+                              }
+
+                                 <button className="button btn btn-danger btn-close-addfile">tutup</button>
                               </div>
-                              <button className="btn btn-primary btn-submit w-100">Submit Tugas</button>
+                              <button className="submit-tugas btn btn-primary btn-submit w-100">Submit Tugas</button>
                            </div>
                         )
                      })
@@ -130,9 +116,6 @@ const CoursePage = () => {
             <Footer />
             </>
             )
-      }
-      </>
-	)
 }
 
 export default CoursePage

@@ -11,6 +11,9 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+a {
+	text-decoration: none;
+}
 
 li {
 	list-style: none
@@ -38,7 +41,7 @@ header {
 }
 
 .brand img {
-	width: 65px
+	width: calc(9vw + 3vh)
 }
 
 .brand .txt-brand {
