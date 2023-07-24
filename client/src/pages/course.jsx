@@ -1,5 +1,5 @@
 import $ from "jquery"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 
 import "../css/course.css"
@@ -29,34 +29,34 @@ const CoursePage = () => {
     id: null,
     element: null
    })
-
-   console.log("after use effect")
-
    
    useEffect(() => {
 
-    const token = getCookie("token")
+    setTimeout(() => {
+      const token = getCookie("token")
 
-    tokenUtil.getToken(token,{ navigate, setUsername })
-    videoUtil.getAll(setData,[runjQuery])
-    console.log($(`#video-title-${0}`),"diluar func runjquery")
-     function runjQuery(){
-    console.log($(`#video-title-${0}`),"didalam func runjquery")
-      $(".input-file").hide()
+      tokenUtil.getToken(token,{ navigate, setUsername })
+      videoUtil.getAll(setData,[runjQuery])
+      
+       function runjQuery(){
+      
+        $(".input-file").hide()
 
-         $(".btn-submit").click(function(e){
-            $(".btn-submit").show()
-            $(".input-file").hide()
-            $(e.target).prev().show()
-            $(this).hide()
-         })
+           $(".btn-submit").click(function(e){
+              $(".btn-submit").show()
+              $(".input-file").hide()
+              $(e.target).prev().show()
+              $(this).hide()
+           })
 
-         $(".btn-close-addfile").click(function(e){
-            $(".btn-submit").show()
-            $(".input-file").hide()
-         })
- 
-     }
+           $(".btn-close-addfile").click(function(e){
+              $(".btn-submit").show()
+              $(".input-file").hide()
+           })
+   
+       }
+    },1)
+
 
    },[])
 
