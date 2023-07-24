@@ -37,18 +37,15 @@ const CoursePage = () => {
       tokenUtil.getToken(token,{ navigate, setUsername })
       videoUtil.getAll(setData)
 
+      document.querySelectorAll(".video-title").forEach((el,index) => {
+        getTitle(data[index].url,el)
+       })
+
    },[])
 
    document.querySelectorAll(".video-title").forEach((el,index) => {
-    console.log("ini sebelum dikirim ke fungsi")
-    console.log({
-      id: data[index].url,
-      element: el
-    })
     getTitle(data[index].url,el)
    })
-   console.log(document.querySelectorAll(".video-title"))
-   console.log("000001")
 
 	return (
       <>
