@@ -37,9 +37,16 @@ const CoursePage = () => {
 
    },[])
 
-   document.querySelectorAll(".video-title").forEach((el,index) => {
-    getTitle(data[index].url,el,setTitle)
-   })
+
+   if(data){
+    if(data.length){
+     document.querySelectorAll(".video-title").forEach((el,index) => {
+      getTitle(data[index].url,el,setTitle)
+     })
+    }
+   }
+
+
 
 	return (
       <>
