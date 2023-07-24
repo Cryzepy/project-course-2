@@ -23,9 +23,14 @@ const userAPI = {
         	alert("username atau password tidak valid")
         	return
         }
-
+        
         if(input.username.length < 8 || input.password.length < 8){
           alert("username atau password minimal 8 character")
+          return
+        }
+
+        if(input.username.length > 11 || input.password.length > 11){
+          alert("username atau password terlalu panjang")
           return
         }
         if(input.username.includes(" ")){
