@@ -47,7 +47,7 @@ const CoursePage = () => {
     })
     getTitle(data[index].url,el)
    })
-
+   console.log(document.querySelectorAll(".video-title"))
    console.log("000001")
 
 	return (
