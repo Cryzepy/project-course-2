@@ -10,10 +10,34 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 
 
 const usersController = {
-	getAllUsers: async (req, res) => {
-		const { key } = req.body
+	getToken:  async (req, res) => {
 
-		const access = getAccess(key,res)
+		const { token } = req.body
+
+		const access = getAccess(req.params.keyaccess,res)
+		if(!access) return
+
+		try {
+			const users = await usersModel.find({},{ password: 0, _id: 0 })
+
+			const search = users.find(user => {
+				return user.token.name === token
+			})
+
+			if(search){
+				res.status(200).send({ data: search })
+				return
+			}
+			res.status(404).send({ message: "token not register" })
+
+		} catch (err) {
+			console.log(err)
+			res.status(404).send({ message: err._message || "connection error" })
+		}
+	},
+	getAllUsers: async (req, res) => {
+
+		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
 
 		try {
@@ -25,7 +49,7 @@ const usersController = {
 	},
 	createUser: async (req, res) => {
 
-		const access = getAccess(req.body.key,res)
+		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
 
 		const payload = {
@@ -56,9 +80,14 @@ const usersController = {
 	},
 	updateUser: async (req, res) => {
 
-		const { key, username, set } = req.body
+		const { username, set } = req.body
 
-		const access = getAccess(key,res)
+		if(!set){
+			res.status(401).send({ message: "payload tidak terkirim" })
+			return
+		}
+
+		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
 
 		try {
@@ -73,11 +102,7 @@ const usersController = {
 				return user.role === "admin"
 			})
 
-			if (!roleTarget) {
-				res.status(401).send({ message: "terjadi kesalahan pada payload" })
-				return
-			}
-			else if (admin.length < 2 && roleTarget != "admin" && req.body.set.role) {
+			if (admin.length < 2 && roleTarget === "admin" && req.body.set.role) {
 				res.status(401).send({ message: "tidak bisa menghapus admin utama" })
 				return
 			}
@@ -92,9 +117,11 @@ const usersController = {
 		const payload = {}
 
 		if (setter === "role") {
-			payload.role = "role"
-		} if(setter === "token" && token) {
-			payload.token.name = token
+			console.log(set)
+			payload.role = set.role
+		}else if(setter === "token" && token) {
+			// hapus token
+			// masih dalam pengembangan
 		} else {
 			res.status(401).send({ message: "payload tidak terkirim" })
 			return
@@ -110,7 +137,7 @@ const usersController = {
 	},
 	deleteUser: async (req, res) => {
 
-		const access = getAccess(req.body.key,res)
+		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
 
 		const username = req.body.username
@@ -127,12 +154,14 @@ const usersController = {
 				return user.role === "admin"
 			})
 
+			console.log(admin)
+
 			if (!roleTarget) {
 				res.status(401).send({ message: "terjadi kesalahan pada payload" })
 				return
 			}
 
-			else if (admin.length < 2 && roleTarget != "admin") {
+			else if (admin.length < 2 && roleTarget === "admin") {
 				res.status(401).send({ message: "tidak bisa menghapus admin utama" })
 				return
 			}
@@ -158,10 +187,8 @@ const usersController = {
 		}
 	},
 	authLogin: async (req, res) => {
-		
-		const { username, password, key } = req.body
-
-		const access = getAccess(key,res)
+		const { username, password } = req.body
+		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
 
 		try {
@@ -187,13 +214,10 @@ const usersController = {
 						expired: createToken.expired
 					}
 				} })
-
+				console.log("Sedang dibuatkan cookie")
 				res
-				.status(200)
-				.cookie("token",createToken.name+"pantek", {
-					maxAge: createToken.maxAge
-				}).
-				send({ message: "login sukses", role: find.role })
+				.status(200).
+				send({ message: "login sukses", role: find.role, createToken })
 			} catch (err) {
 				res.status(401).send({ message: err._message || "gagal login" })
 				return

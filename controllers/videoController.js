@@ -11,13 +11,12 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 const videosController = {
 	getAllVideos: async (req, res) =>  {
 
-		const { key } = req.body
-
-		const access = getAccess(key,res)
+		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
 
 		try {
 			const videos = await videosModel.find()
+			console.log(videos)
 			res.status(200).send({ data: videos })
 		} catch (err) {
 			res.status(500).send({ message: err._message || "network error" })
@@ -25,9 +24,9 @@ const videosController = {
 	},
 	createVideo: async (req, res) => {
 
-		const { key, url, linkTugas } = req.body
-
-		const access = getAccess(key,res)
+		const { url, googleForm } = req.body
+		
+		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
 
 		if (url) {
@@ -39,7 +38,8 @@ const videosController = {
 
 		try {
 
-			const payload = { url, linkTugas }
+			const payload = { url, linkTugas: googleForm }
+			console.log(payload)
 			const create = await videosModel.create(payload)
 			res.send({ message: "sukses menambahkan video" })
 		} catch (err) {
@@ -48,9 +48,9 @@ const videosController = {
 	},
 	deleteVideo: async (req, res) => {
 		
-		const { key, target } = req.body
+		const { target } = req.body
 
-		const access = getAccess(key,res)
+		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
 
 		try {
