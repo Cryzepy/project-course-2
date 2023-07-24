@@ -1,206 +1,208 @@
+const mongoose = require("mongoose")
+
 const usersModel = require("../models/usersModel.js")
-const tokensModel = require("../models/tokensModel.js")
 
-const getAccess = (keyaccess,res) => {
-	const adminpw = "savxr6wecvrt46rt376rtb3y"
-	if(keyaccess != adminpw){
-		res.json({
-			status: 500,
-			message: "maaf anda tidak memiliki access"
-		})
-		return false
-	}
-	return true
+const getAccess = require("../utils/access.js")
 
-}
+// connection to database
+mongoose.connect(process.env.MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
 
 const usersController = {
-	getAllUsers: (req, res) => {
-		if(!getAccess(req.params.keyaccess,res)) return
-		usersModel.getAllUsers((err, rows) => {
-			if(err){
-				res.json({
-					status: 500,
-					message: err
-				})
-			}else{
-				res.json({
-					status: 201,
-					data: rows
-				})
-			}
-		})
+	getAllUsers: async (req, res) => {
+		const { key } = req.body
+
+		const access = getAccess(key,res)
+		if(!access) return
+
+		try {
+			const users = await usersModel.find({},{ token: 0, _id: 0 })
+			res.status(200).send({ data: users })
+		} catch (err) {
+			res.status(404).send({ message: err._message || "connection error" })
+		}
 	},
-	getUserByName: (req, res) => {
-		if(!getAccess(req.params.keyaccess,res)) return
-		const username = req.query.username
-		usersModel.getUserByName(username,(err, rows) => {
-			if(err){
-				res.json({
-					status: 500,
-					message: err
-				})
-			}else{
-				if(rows.length){
-					res.json({
-						status: 201,
-						data: rows
-					})
-				}else{
-					res.json({
-						status: 500,
-						message: "username tidak terdaftar"
-					})	
-				}
-			}
-		})
-	},
-	createUser: (req, res) => {
-		if(!getAccess(req.params.keyaccess,res)) return
+	createUser: async (req, res) => {
+
+		const access = getAccess(req.body.key,res)
+		if(!access) return
 
 		const payload = {
 			username: req.body.username,
-			password: req.body.password
+			password: req.body.password,
+			role: "user",
+			token: {
+				name: null,
+				expired: null
+			},
 		}
 
-		usersModel.createUser(payload,(err) => {
-			if(err){
-				res.json({
-					status: 500,
-					message: err
-				})
-			}else{
-				res.json({
-					status: 201,
-					message: payload.username + " sukses dibuat"
-				})
+		let message
+
+		try {
+			const create = await usersModel.create(payload)
+			res.status(200).send({ message: "sukses membuat akun" })
+		} catch (err) {
+			console.log(err)
+			if (err.code === 11000) {
+				message = "username tidak disarankan"
+			} else {
+				message = err._message || "gagal menghubungkan ke database"
 			}
-		})
+			res.status(400).send({ message })
+		}
 
 	},
-	updateUser: (req, res) => {
-		if(!getAccess(req.params.keyaccess,res)) return
+	updateUser: async (req, res) => {
 
-		const payload = req.body
+		const { key, username, set } = req.body
 
-		usersModel.getAllUsers((err,data) => {
+		const access = getAccess(key,res)
+		if(!access) return
 
-			let roleTarget;
-			const lengthAdmin = data.filter(row => {
-				if(row.username === payload.username){
-					roleTarget = row.role
+		try {
+			const users = await usersModel.find({},{ token: 0, _id: 0, password: 0 })
+
+			let roleTarget
+
+			const admin = users.filter(user => {
+				if (user.username === username) {
+					roleTarget = user.role
 				}
-				return row.role === "admin"
+				return user.role === "admin"
 			})
 
-			if(lengthAdmin.length <= 1 && roleTarget == "admin"){
-				res.json({
-					status: 500,
-					message: "tidak bisa menghapus admin terakhir"
-				})
+			if (!roleTarget) {
+				res.status(401).send({ message: "terjadi kesalahan pada payload" })
 				return
 			}
-			
-			usersModel.updateUser(payload,(err) => {
-				if(err){
-					res.json({
-						status: 500,
-						message: err
-					})
-				}else{
-					res.json({
-						status: 201,
-						message: payload.username + " sukses sunting"
-					})
-				}
-			})
-		})
+			else if (admin.length < 2 && roleTarget != "admin" && req.body.set.role) {
+				res.status(401).send({ message: "tidak bisa menghapus admin utama" })
+				return
+			}
 
+		} catch (err) {
+			res.status(404).send({ message: err._message || "connection error" })
+			return
+		}
+
+		const setter = set.role ? "role" : "token"
+
+		const payload = {}
+
+		if (setter === "role") {
+			payload.role = "role"
+		} if(setter === "token" && token) {
+			payload.token.name = token
+		} else {
+			res.status(401).send({ message: "payload tidak terkirim" })
+			return
+		}
+
+		try {
+			const upUser = await usersModel.updateOne({ username }, { $set: payload })
+			res.status(200).send({ message: "sukses mengupdate data" })
+		} catch (err) {
+			res.status(401).send({ message: err._message || "gagal mengupdate data" })
+		}
 
 	},
-	deleteUser: (req, res) => {
-		if(!getAccess(req.params.keyaccess,res)) return
+	deleteUser: async (req, res) => {
+
+		const access = getAccess(req.body.key,res)
+		if(!access) return
+
 		const username = req.body.username
 
-		usersModel.getAllUsers((err,data) => {
+		try {
+			const users = await usersModel.find({},{ token: 0, _id: 0, password: 0 })
 
-			let roleTarget;
-			const lengthAdmin = data.filter(row => {
-				console.log(row.username,username)
-				if(row.username === username){
-					roleTarget = row.role
+			let roleTarget
+
+			const admin = users.filter(user => {
+				if (user.username === username) {
+					roleTarget = user.role
 				}
-				return row.role === "admin"
+				return user.role === "admin"
 			})
 
-			if(lengthAdmin.length <= 1 && roleTarget == "admin"){
-				res.json({
-					status: 500,
-					message: "tidak bisa menghapus admin terakhir"
-				})
+			if (!roleTarget) {
+				res.status(401).send({ message: "terjadi kesalahan pada payload" })
 				return
 			}
 
-			usersModel.deleteUser(username,(err) => {
-				if(err){
-					res.json({
-						status: 500,
-						message: err
-					})
-				}else{
-					res.json({
-						status: 201,
-						message: `${username} sukses dihapus`
-					})
-				}
-			})
-		})
-
-
-	},
-	authLogin: (req, res) => {
-		if(!getAccess(req.params.keyaccess,res)) return
-
-		const payload = req.body
-
-		usersModel.authLogin(payload,(err, rows) => {
-			if(err){
-				res.json({
-					status: 500,
-					message: err
-				})
-			}else{
-				if(rows.length){
-					const myToken = {
-						token: Date.now(),
-						username: payload.username,
-						expired: Date.now() + (7 * 86400000)
-					}
-
-					tokensModel.createToken(myToken,function(){})
-
-					const configCookie = {
-						token: myToken.token,
-						maxAge: (7 * 86400000),
-						role: rows.role
-					}
-
-					res
-					.json({
-						status: 201,
-						message: "login success",
-						configCookie
-					})
-				}else{
-					res.json({
-						status: 500,
-						message: "username atau password salah"
-					})	
-				}
+			else if (admin.length < 2 && roleTarget != "admin") {
+				res.status(401).send({ message: "tidak bisa menghapus admin utama" })
+				return
 			}
-		})
-	}
 
+		} catch (err) {
+			console.log(err)
+			res.status(404).send({ message: err._message || "connection error" })
+			return
+		}
+
+		try {
+			const del = await usersModel.deleteOne({ username })
+
+			if (del.deletedCount) {
+				res.status(200).send({ message: "sukses menghapus akun" })
+				return
+			} 
+
+			res.status(404).send({ message: "terjadi kesalahan pada payload" })
+
+		} catch (err) {
+			res.status(300).send({ message: err._message || "newtwok error" })
+		}
+	},
+	authLogin: async (req, res) => {
+		
+		const { username, password, key } = req.body
+
+		const access = getAccess(key,res)
+		if(!access) return
+
+		try {
+			const find = await usersModel.findOne({ username, password })
+			
+			if (!find) {
+				res.status(404).send({ message: "username atau password salah" })
+				return
+			} 
+
+			try {
+
+				const createToken = {
+					name: Date.now(),
+					expired: Date.now() + (7 * 86400000),
+					maxAge: (7 * 86400000),
+
+				}
+
+				const upUser = await usersModel.updateOne({ username }, { $set: {
+					token: {
+						name: createToken.name,
+						expired: createToken.expired
+					}
+				} })
+
+				res
+				.status(200)
+				.cookie("token",createToken.name+"pantek", {
+					maxAge: createToken.maxAge
+				}).
+				send({ message: "login sukses", role: find.role })
+			} catch (err) {
+				res.status(401).send({ message: err._message || "gagal login" })
+				return
+			}
+
+		} catch (err) {
+			res.status(400).send({ message: "network error" })
+		}
+	}
 }
 
 module.exports = usersController

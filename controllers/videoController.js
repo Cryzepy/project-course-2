@@ -1,80 +1,68 @@
+const mongoose = require("mongoose")
+
 const videosModel = require("../models/videosModel.js")
 
-const getAccess = (keyaccess,res) => {
-	const adminpw = "savxr6wecvrt46rt376rtb3y"
-	if(keyaccess != adminpw){
-		res.json({
-			status: 500,
-			message: "maaf anda tidak memiliki access"
-		})
-		return false
-	}
-	return true
-}
+const getAccess = require("../utils/access.js")
+
+// connection to database
+mongoose.connect(process.env.MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const videosController = {
-	getAllVideos:  (req, res) =>  {
+	getAllVideos: async (req, res) =>  {
 
-		if(!getAccess(req.params.keyaccess,res)) return
+		const { key } = req.body
 
-		videosModel.getAllVideos((err, rows) => {
-			if(err){
-				res.json({
-					status: 500,
-					message: err
-				})
-			}else{
-				res.json({
-					status: 200,
-					data: rows
-				})
-			}
-		})
+		const access = getAccess(key,res)
+		if(!access) return
+
+		try {
+			const videos = await videosModel.find()
+			res.status(200).send({ data: videos })
+		} catch (err) {
+			res.status(500).send({ message: err._message || "network error" })
+		}
 	},
-	createVideo: (req, res) => {
-		if(!getAccess(req.params.keyaccess,res)) return
-		
-		if(!req.body.payload){
-			res.json({
-				status: 500,
-				message: "payload tidak dikirim"
-			})
-			return
+	createVideo: async (req, res) => {
+
+		const { key, url, linkTugas } = req.body
+
+		const access = getAccess(key,res)
+		if(!access) return
+
+		if (url) {
+			if(url.length != 11){
+				res.status(400).send({ message: "id tidak valid" })	
+				return
+			}
 		}
 
-		videosModel.createVideo(req.body.payload,(err) => {
-			if(err){
-				res.json({
-					status: 500,
-					message: err
-				})
-			}else{
+		try {
 
-				res.json({
-					status: 201,
-					message: "video sukses ditambahkan"
-				})
-			}
-		})
+			const payload = { url, linkTugas }
+			const create = await videosModel.create(payload)
+			res.send({ message: "sukses menambahkan video" })
+		} catch (err) {
+			res.status(400).send({ message: err._message || "connection error" })
+		}
 	},
-	deleteVideo: (req, res) => {
-		if(!getAccess(req.params.keyaccess,res)) return
+	deleteVideo: async (req, res) => {
+		
+		const { key, target } = req.body
 
-		const video = req.query.target
+		const access = getAccess(key,res)
+		if(!access) return
 
-		videosModel.deleteVideo(video,(err) => {
-			if(err){
-				res.json({
-					status: 500,
-					message: err
-				})
-			}else{
-				res.json({
-					status: 201,
-					message: "sukses menghapus video"
-				})
+		try {
+			const del = await videosModel.deleteOne({ url: target })
+			if(del.deletedCount === 0){
+				res.status(500).send({ message: "payload error" })
+				return
 			}
-		})
+			res.status(200).send({ message: "sukses menghapus video" })
+		} catch (err) {
+			res.status(500).send({ message: err._message || "connection error" })
+		}
 	}
 }
 

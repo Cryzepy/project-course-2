@@ -1,100 +1,24 @@
-const sqlite3 = require("sqlite3").verbose()
-const db_path = "./db/course.db"
+const mongoose = require("mongoose")
 
-const usersModel = {
-	getAllUsers: (call) => {
-		const db = new sqlite3.Database(db_path, (err) => {
-			if(err){
-				call(err)
-				return
-			}
-		})
-
-		db.run("CREATE TABLE IF NOT EXISTS users (username varchar(64) primary key not null, password varchar(64) not null, role varchar(8) not null)")
-
-		db.all('SELECT * FROM users', (err, rows) => {
-			db.close();
-		    call(err ? err : null, err ? null : rows)
-		});
+const userSchema = new mongoose.Schema({
+	username: {
+		type: String,
+		required: true,
+		index: true,
+		unique: true
 	},
-	getUserByName: (username,call) => {
-		const db = new sqlite3.Database(db_path, (err) => {
-			if(err){
-				call(err)
-				return
-			}
-		})
-
-		db.run("CREATE TABLE IF NOT EXISTS users (username varchar(64) primary key not null, password varchar(64) not null,  role varchar(8) not null)")
-
-		db.all(`SELECT * FROM users where username = '${username}'`, (err, rows) => {
-			db.close()
-		    call(err ? err : null, err ? null : rows)
-		});
+	password: {
+		type: String,
+		required: true,
 	},
-	createUser: (payload,call) => {
-		const db = new sqlite3.Database(db_path, (err) => {
-			if(err){
-				call(err)
-				return
-			}
-		})
-
-		db.run("CREATE TABLE IF NOT EXISTS users (username varchar(64) primary key not null, password varchar(64) not null, role varchar(8) not null)")
-
-		db.all(`INSERT INTO users VALUES ('${payload.username}', '${payload.password}', 'user')`, err => {
-			db.close()
-		    call(err ? err : null)
-		});	
+	role: {
+		type: String,
+		required: true
 	},
-	deleteUser: (username,call) => {
-		const db = new sqlite3.Database(db_path, (err) => {
-			if(err){
-				call(err)
-				return
-			}
-		})
+	token: {
+		name: String,
+		expired: Number
+	}
+})
 
-		db.run("CREATE TABLE IF NOT EXISTS users (username varchar(64) primary key not null, password varchar(64) not null, role varchar(8) not null)")
-
-		db.all(`delete from users where username = '${username}'`, err => {
-			db.close()
-		    call(err ? err : null)
-		});	
-	},
-	authLogin: (payload,call) => {
-		const db = new sqlite3.Database(db_path, (err) => {
-			if(err){
-				call(err)
-				return
-			}
-		})
-
-		db.run("CREATE TABLE IF NOT EXISTS users (username varchar(64) primary key not null, password varchar(64) not null,  role varchar(8) not null)")
-
-		db.all(`SELECT * FROM users where username = '${payload.username}' and password = '${payload.password}'`, (err, rows) => {
-			db.close()
-		    call(err ? err : null, err ? null : rows)
-		});
-	},
-	updateUser: (payload,call) => {
-
-		const newRole = payload.role === "user" ? "admin" : "user"
-		const db = new sqlite3.Database(db_path, (err) => {
-			if(err){
-				call(err)
-				return
-			}
-		})
-
-		db.run("CREATE TABLE IF NOT EXISTS users (username varchar(64) primary key not null, password varchar(64) not null, role varchar(8) not null)")
-
-		db.all(`UPDATE USERS SET ROLE = '${newRole}' WHERE USERNAME = '${payload.username}'`, err => {
-			db.close()
-		    call(err ? err : null)
-		});	
-	},
-
-}
-
-module.exports = usersModel
+module.exports = mongoose.model("accounts",userSchema)
