@@ -32,34 +32,16 @@ const CoursePage = () => {
    
    useEffect(() => {
 
-    setTimeout(() => {
       const token = getCookie("token")
 
       tokenUtil.getToken(token,{ navigate, setUsername })
-      videoUtil.getAll(setData,[runjQuery])
-      
-       function runjQuery(){
-      
-        $(".input-file").hide()
-
-           $(".btn-submit").click(function(e){
-              $(".btn-submit").show()
-              $(".input-file").hide()
-              $(e.target).prev().show()
-              $(this).hide()
-           })
-
-           $(".btn-close-addfile").click(function(e){
-              $(".btn-submit").show()
-              $(".input-file").hide()
-           })
-   
-       }
-    },1)
-
+      videoUtil.getAll(setData)
 
    },[])
 
+   document.querySelectorAll(".video-title").forEach((el,index) => {
+    getTitle(data[index].url,el)
+   })
 
 	return (
       <>
@@ -82,9 +64,7 @@ const CoursePage = () => {
                         const linkThumb = `https://img.youtube.com/vi/${id.url}/maxresdefault.jpg`
                         const idVideo = `video-title-${index}`
 
-                        const element = $(`#video-title-${index}`)[0]
-
-                        getTitle(id.url,element)
+                        const inpClassName = `input-file ip-${index}`
 
                         return (
                            <div className="course" key={index}>
@@ -92,7 +72,9 @@ const CoursePage = () => {
                                  <img src={linkThumb} alt="thumbnail"/>
                               </a>
                               <h6 className="video-title" id={idVideo}>Judul Tidak Tersedia</h6>
-                              <div className="input-file">
+                              <div className={inpClassName} style={{
+                                display: "none"
+                              }}>
                               {
                                 id.linkTugas && (
                                   <a href={id.linkTugas} className="button send-data" target="_blank">
@@ -105,9 +87,27 @@ const CoursePage = () => {
                                 !id.linkTugas && ( <a className="btn btn-success button send-data" id="btn-send-tugas">Tidak Ada Tugas</a> )
                               }
 
-                                 <button className="button btn btn-danger btn-close-addfile">tutup</button>
+                                 <button className="button btn btn-danger btn-close-addfile" onClick={function(event){
+                                  const btnSubmits = document.querySelectorAll(".btn-submit")
+                                  const inputFiles = document.querySelectorAll(".input-file")
+
+                                  btnSubmits.forEach(el => el.style.display = "block")
+                                  inputFiles.forEach(el => el.style.display = "none")
+
+                                 }}>tutup</button>
                               </div>
-                              <button className="submit-tugas btn btn-primary btn-submit w-100">Submit Tugas</button>
+                              <button className="submit-tugas btn btn-primary btn-submit w-100" onClick={function(event){
+                                const btnSubmits = document.querySelectorAll(".btn-submit")
+                                const inputFiles = document.querySelectorAll(".input-file")
+
+                                btnSubmits.forEach(el => el.style.display = "block")
+                                inputFiles.forEach(el => el.style.display = "none")
+
+                                document.querySelector(`.ip-${index}`).style.display = "flex"
+
+                                event.target.style.display = "none"
+
+                              }}>Submit Tugas</button>
                            </div>
                         )
                      })
