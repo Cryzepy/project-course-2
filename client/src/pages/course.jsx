@@ -59,6 +59,8 @@ const CoursePage = () => {
 
    },[])
 
+   console.log("after use effect")
+
 	return (
       <>
             <header>
