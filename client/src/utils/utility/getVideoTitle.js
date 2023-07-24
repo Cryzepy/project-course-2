@@ -3,10 +3,8 @@ import cheerio from "cheerio"
 
 const API_KEY = "AIzaSyBpvpH8TZJ23b4_vwk4OxtS7SLVh4lApqE"
 
-const getTitle = (id,element) => {
-  console.log("ini setelah dikirim ke fungsi")
-  console.log({ id, element })
-  
+const getTitle = (id,element,set) => {
+
 	if(element === undefined){
 		return 
 	}
@@ -17,6 +15,7 @@ const getTitle = (id,element) => {
     success: function(data) {
     	const videoTitle = data.items[0].snippet.title
     	element.innerText = videoTitle
+      set(Date.now())
     }
   })
 }
