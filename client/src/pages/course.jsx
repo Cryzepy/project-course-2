@@ -30,6 +30,7 @@ const CoursePage = () => {
     element: null
    })
 
+   console.log("after use effect")
 
    
    useEffect(() => {
@@ -59,7 +60,6 @@ const CoursePage = () => {
 
    },[])
 
-   console.log("after use effect")
 
 	return (
       <>
