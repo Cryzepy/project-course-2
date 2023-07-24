@@ -38,9 +38,9 @@ const CoursePage = () => {
 
     tokenUtil.getToken(token,{ navigate, setUsername })
     videoUtil.getAll(setData,[runjQuery])
-
+    console.log($(`#video-title-${index}`),"diluar func runjquery")
      function runjQuery(){
-      console.log('class input file =',$(".input-file"))
+    console.log($(`#video-title-${index}`),"didalam func runjquery")
       $(".input-file").hide()
 
          $(".btn-submit").click(function(e){
