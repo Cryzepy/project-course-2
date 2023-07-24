@@ -40,6 +40,11 @@ const CoursePage = () => {
    },[])
 
    document.querySelectorAll(".video-title").forEach((el,index) => {
+    console.log("ini sebelum dikirim ke fungsi")
+    console.log({
+      id: data[index].url,
+      element: el
+    })
     getTitle(data[index].url,el)
    })
 
