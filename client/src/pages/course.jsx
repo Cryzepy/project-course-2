@@ -48,6 +48,8 @@ const CoursePage = () => {
     getTitle(data[index].url,el)
    })
 
+   console.log("000001")
+
 	return (
       <>
             <header>
