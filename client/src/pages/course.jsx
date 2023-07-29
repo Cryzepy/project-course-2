@@ -25,6 +25,7 @@ const CoursePage = () => {
    const [data, setData] = useState([])
    const [tags,setTags] = useState([])
    const [filter,setFilter] = useState(false)
+   console.log(filter)
 
    useEffect(() => {
 
