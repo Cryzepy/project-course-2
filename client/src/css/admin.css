@@ -52,23 +52,6 @@ header {
 	text-align: center;
 }
 
-#btn-logout {
-	cursor: pointer;
-	background-color: #9f01ea;
-	color: white;
-	padding: .6rem .8rem;
-	border-radius: 2px;
-	border: 1px solid #9f01ea;
-	transition: .3s;
-	font-size: .9rem;
-	text-align: center;
-}
-
-#btn-logout:hover {
-	background-color: #fff;
-	color: #9f01ea
-}
-
 main {
 	background-color: #fff;
 	padding: 1.5rem;

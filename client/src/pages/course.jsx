@@ -25,7 +25,6 @@ const CoursePage = () => {
    const [data, setData] = useState([])
    const [tags,setTags] = useState([])
    const [filter,setFilter] = useState(false)
-   console.log(filter)
 
    useEffect(() => {
 
@@ -49,9 +48,11 @@ const CoursePage = () => {
             </header>
       
             <div className="courses-container">
-               <h2 className="course-title">Courses</h2>
+               <h2 className="course-title text-start">
+                Courses : <span id="courseTitle">{filter === false ? "ALL" : filter.toUpperCase()}</span>
+               </h2>
                { !data.length && (<span>Tidak ada video</span>) }
-               { data.length > 0 && <FilterCategory data={data} setFilter={setFilter} /> }
+               { data.length > 0 && <FilterCategory data={data} setFilter={setFilter} filter={filter} /> }
                { data.length > 0 && (
                   <div className="courses">
                   {

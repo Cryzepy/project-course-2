@@ -9,6 +9,23 @@ const VideoList = ({videos,setVideos}) => {
     $(".pointer").css("top",`-${y+3}px`)
   },[])
 
+  const handleDeleteAllVideos = () => {
+    let key = (Date.now() * Math.random()).toString().replace(".","")
+
+    while(key.length < 10){
+      key += "Q"
+    }
+
+    const question = prompt(`apakah anda yakin ingin menghapus semua video dari database ? jika tulis "${key}" dengan benar `)
+
+    if(question === key){
+      videoUtil.deleteAll(setVideos)
+    }else{
+      alert("masukkan keyword dengan benar")
+    }
+
+  }
+
 	return (<>
             <hr className="hr1" />
                  <div className="input">
@@ -33,7 +50,7 @@ const VideoList = ({videos,setVideos}) => {
       
                  <div className="list-users-container">
                    { !videos.length && <span className="table">tidak ada data</span> }
-                   { videos.length >= 1 && (
+                   { videos.length >= 1 && (<>
                      <table className="table">
                       <thead>
                         <tr>
@@ -68,7 +85,8 @@ const VideoList = ({videos,setVideos}) => {
       
                     </tbody>
                 </table>
-               )
+                { videos.length && <button className="btn btn-danger text-end" id="delete-all-videos" onClick={handleDeleteAllVideos}>Hapus Semua Video</button> }
+               </>)
              }
              </div>
              </>)

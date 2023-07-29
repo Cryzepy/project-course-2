@@ -1,8 +1,8 @@
 import { useState } from "react"
 
-const FilterCategory = ({data,setFilter}) => {
+const FilterCategory = ({data,setFilter,filter}) => {
 
-	const [tagActive, setTagActive] = useState(0)
+	const [show,setShow] = useState(false)
 	const tags = []
 
 	const x = data.filter(el => el.tags.length).forEach(el => {
@@ -13,15 +13,6 @@ const FilterCategory = ({data,setFilter}) => {
 
 		})
 	})
-
-	const styleContainer = {
-		backgroundColor: "#56d8e4",
-		display: "flex",
-		flexWrap: "wrap",
-		padding: "7px",
-		gap: "3px",
-		justifyContent: "center"
-	}
 
 	const handleClick = event => {
 		const iTarget = event.target.getAttribute("data-fc-i")
@@ -40,12 +31,24 @@ const FilterCategory = ({data,setFilter}) => {
 		})
 	}
 
-	return (
-		<div style={styleContainer} className="scroller my-3">
-			<span className="filter-child" onClick={handleClick} data-fc-i={0}>All</span>
-			{ tags.map((tag,index) => <span className="filter-child" key={index} onClick={handleClick} data-fc-i={index+1}>{tag}</span>) }
-		</div>
-	)
+	const handleShowEl = event => {
+		console.log(show)
+		setShow(prev => !prev)
+	}
+
+	return (<div className="text-center my-4">
+		<button className="btn btn-primary" id="btn-show" onClick={handleShowEl}>
+			<span className="ms-2">{show === true ? "hide tags" : "show tags"}</span>
+		</button>
+
+		{
+			show === true &&
+				<div className="scroller my-3">
+					<span className="filter-child" onClick={handleClick} data-fc-i={0}>All</span>
+					{ tags.map((tag,index) => <span className="filter-child" key={index} onClick={handleClick} data-fc-i={index+1}>{tag}</span>) }
+				</div>
+				
+		}</div>)
 }
 
 export default FilterCategory

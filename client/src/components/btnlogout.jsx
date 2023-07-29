@@ -17,10 +17,12 @@ const BtnLogout = ({size}) => {
 		deleteToken.deleteToken(token,{navigate})
 	}
 
-	const className = `rounded py-2 px-3 text-center ${size === "large" ? 'd-none d-sm-block' : 'd-block d-sm-none rounded-0'}`
+	const className = `btn btn-primary px-3 rounded text-center ${size === "large" ? 'd-none d-sm-block' : 'd-block d-sm-none rounded-0'}`
 
 	return (
-		<span id="btn-logout" className={className} onClick={handleLogout}>Log Out</span>
+		<span id="btn-logout" className={className} onClick={handleLogout}>
+			{ size === "large" ?  <i class="bi bi-box-arrow-right fs-5"></i> : <span className="">Logout</span> }
+		</span>
 	)
 }
 
