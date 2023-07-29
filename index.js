@@ -26,6 +26,7 @@ app.post("/admin/:keyaccess/authLogin/",usersController.authLogin)
 app.get("/admin/:keyaccess/videos/",videosController.getAllVideos) // success
 app.post("/admin/:keyaccess/createVideo/",videosController.createVideo) // success
 app.delete("/admin/:keyaccess/deleteVideo/",videosController.deleteVideo) // success
+app.delete("/admin/:keyaccess/deleteVideoAll/",videosController.deleteVideoAll) // success
 
 app.listen(3001, () => {
 	console.log(`server running`)

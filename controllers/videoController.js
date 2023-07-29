@@ -27,7 +27,6 @@ const videosController = {
 		
 		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
-
 		if (url) {
 			if(url.length != 11){
 				res.status(400).send({ message: "id tidak valid" })	
@@ -64,6 +63,18 @@ const videosController = {
 				res.status(500).send({ message: "payload error" })
 				return
 			}
+			res.status(200).send({ message: "sukses menghapus video" })
+		} catch (err) {
+			res.status(500).send({ message: err._message || "connection error" })
+		}
+	},
+	deleteVideoAll: async (req, res) => {
+
+		const access = getAccess(req.params.keyaccess,res)
+		if(!access) return
+
+		try {
+			const del = await videosModel.deleteMany({})
 			res.status(200).send({ message: "sukses menghapus video" })
 		} catch (err) {
 			res.status(500).send({ message: err._message || "connection error" })
