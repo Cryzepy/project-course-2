@@ -37,12 +37,7 @@ const videosController = {
 
 		try {
 
-			const newTags = tags.split(";").filter(el => el).map(el => el.trim())
-
-			if(newTags.length > 6) {
-				res.status(301).send({ message: "tag maximal 6" })
-				return
-			}
+			const newTags = tags.split(";").filter(el => el).map(el => el.trim().toLowerCase())
 
 			const payload = { url, linkTugas: googleForm, tags: newTags }
 	
