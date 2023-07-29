@@ -16,7 +16,6 @@ const videosController = {
 
 		try {
 			const videos = await videosModel.find()
-			console.log(videos)
 			res.status(200).send({ data: videos })
 		} catch (err) {
 			res.status(500).send({ message: err._message || "network error" })
@@ -24,7 +23,7 @@ const videosController = {
 	},
 	createVideo: async (req, res) => {
 
-		const { url, googleForm } = req.body
+		const { url, googleForm, tags } = req.body
 		
 		const access = getAccess(req.params.keyaccess,res)
 		if(!access) return
@@ -38,11 +37,22 @@ const videosController = {
 
 		try {
 
-			const payload = { url, linkTugas: googleForm }
-			console.log(payload)
+			const newTags = tags.split(";").filter(el => el).map(el => el.trim())
+
+			if(newTags.length > 6) {
+				res.status(301).send({ message: "tag maximal 6" })
+				return
+			}
+
+			const payload = { url, linkTugas: googleForm, tags: newTags }
+	
 			const create = await videosModel.create(payload)
-			res.send({ message: "sukses menambahkan video" })
+			res.status(200).send({ message: "sukses menambahkan video" })
 		} catch (err) {
+			if(err.code == 11000){
+				res.status(400).send({ message: "video sudah ada" })
+				return
+			}
 			res.status(400).send({ message: err._message || "connection error" })
 		}
 	},

@@ -7,7 +7,8 @@ const videoSchema = new mongoose.Schema({
 		index: true,
 		unique: true
 	},
-	linkTugas: String
+	linkTugas: String,
+	tags: Array
 })
 
 module.exports = mongoose.model("videos",videoSchema)
