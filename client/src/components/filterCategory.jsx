@@ -16,10 +16,11 @@ const FilterCategory = ({data,setFilter}) => {
 
 	const styleContainer = {
 		backgroundColor: "#56d8e4",
-		borderRadius: "2px",
 		display: "flex",
-		gap: "5px",
-		padding: "5px"
+		flexWrap: "wrap",
+		padding: "7px",
+		gap: "3px",
+		justifyContent: "center"
 	}
 
 	const handleClick = event => {
@@ -40,9 +41,9 @@ const FilterCategory = ({data,setFilter}) => {
 	}
 
 	return (
-		<div style={styleContainer} className="scroller overflow-x-scroll my-3">
-			<span className="filter-child rounded" onClick={handleClick} data-fc-i={0}>All</span>
-			{ tags.map((tag,index) => <span className="filter-child rounded" key={index} onClick={handleClick} data-fc-i={index+1}>{tag}</span>) }
+		<div style={styleContainer} className="scroller my-3">
+			<span className="filter-child" onClick={handleClick} data-fc-i={0}>All</span>
+			{ tags.map((tag,index) => <span className="filter-child" key={index} onClick={handleClick} data-fc-i={index+1}>{tag}</span>) }
 		</div>
 	)
 }
