@@ -50,12 +50,13 @@ const AdminPage = () => {
     {
       users != false && (
         <>
+           <BtnLogout size="small" />
           <header>
            <span className="brand">
               <img src={logo} alt="Logo PKM PM 1" />
               <span className="txt-brand">ADMIN Panel</span>
            </span>
-           <BtnLogout username={username} />
+           <BtnLogout size="large" />
         </header>
 
         <main>

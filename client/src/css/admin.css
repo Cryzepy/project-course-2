@@ -120,6 +120,19 @@ main {
 	padding: .3rem .7rem
 }
 
+.inp-tags {
+	position: relative;
+}
+
+#txt-tags:focus~.pointer{
+	display: block;
+}
+
+.pointer {
+	display: none;
+	position: absolute;
+}
+
 .list-users-container {
 	margin: 1.5rem .5rem
 }

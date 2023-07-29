@@ -8,6 +8,7 @@ import logo from "../images/Logo PKM.png"
 import Footer from "../components/footer.jsx"
 import BtnLogout from "../components/btnlogout.jsx"
 import ErrorPage from "../pages/404.jsx"
+import FilterCategory from "../components/filterCategory.jsx"
 
 import tokenUtil from "../utils/api/token.js"
 import videoUtil from "../utils/api/video.js"
@@ -21,25 +22,19 @@ const CoursePage = () => {
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
   }
-
-   const [username, setUsername] = useState("")
-   const [data, setData] = useState(false)
-   const [title,setTitle] = useState("Judul Tidak Tersedia")
+   const [data, setData] = useState([])
+   const [tags,setTags] = useState([])
+   const [filter,setFilter] = useState(false)
 
    useEffect(() => {
 
       const token = getCookie("token")
 
-      tokenUtil.getToken(token,{ navigate, setUsername })
+      tokenUtil.getToken(token,{ navigate })
 
       videoUtil.getAll(setData)
 
    },[])
-
-
-
-
-
 
 	return (
       <>  
@@ -55,10 +50,18 @@ const CoursePage = () => {
             <div className="courses-container">
                <h2 className="course-title">Courses</h2>
                { !data.length && (<span>Tidak ada video</span>) }
+               { data.length > 0 && <FilterCategory data={data} setFilter={setFilter} /> }
                { data.length > 0 && (
                   <div className="courses">
                   {
-                     data.map((id, index) => {
+                     data
+                     .filter(el => {
+                      if(filter === false){
+                        return true
+                      }
+                      return el.tags.includes(filter)
+                     })
+                     .map((id, index) => {
                         const linkVideo = `https://www.youtube.com/watch?v=${id.url}`
                         const linkThumb = `https://img.youtube.com/vi/${id.url}/maxresdefault.jpg`
                         const idVideo = `video-title-${index}`
@@ -68,7 +71,7 @@ const CoursePage = () => {
                         return (
                            <div className="course" key={index}>
                               <a href={linkVideo} target="_blank">
-                                 <img src={linkThumb} alt="thumbnail"/>
+                                 <img src={linkThumb} alt="thumbnail" className="thumbnail"/>
                               </a>
                               <div className={inpClassName} style={{
                                 display: "none"
