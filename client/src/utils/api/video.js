@@ -32,6 +32,8 @@ const videoAPI = {
 	},
 	create: function(payload,setNewData,others){
 
+		// title, description, channelTitle
+
 		const getAll = this.getAll
 		let url = payload.url
 		const pointer = ".youtube.com/watch?v="

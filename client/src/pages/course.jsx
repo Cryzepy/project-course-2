@@ -7,34 +7,48 @@ import logo from "../images/Logo PKM.png"
 
 import Footer from "../components/footer.jsx"
 import BtnLogout from "../components/btnlogout.jsx"
-import ErrorPage from "../pages/404.jsx"
 import FilterCategory from "../components/filterCategory.jsx"
 
 import tokenUtil from "../utils/api/token.js"
 import videoUtil from "../utils/api/video.js"
+import google from "../utils/api/google.js"
 
 const CoursePage = () => {
 
-   const navigate = useNavigate()
+  const navigate = useNavigate()
+  let index = 0
 
-    function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
+  function getCookie (name) {
+    const value = `; ${document.cookie}`
+    const parts = value.split(`; ${name}=`)
+    if (parts.length === 2) return parts.pop().split(';').shift()
   }
-   const [data, setData] = useState([])
-   const [tags,setTags] = useState([])
-   const [filter,setFilter] = useState(false)
+
+  const [data, setData] = useState([])
+  const [filter,setFilter] = useState(false)
+
+   useEffect(() => {
+      const token = getCookie("token")
+      tokenUtil.getToken(token,{ navigate })
+      if (index === 0) {
+        videoUtil.getAll(setData)
+      }
+      index++
+   },[])
 
    useEffect(() => {
 
-      const token = getCookie("token")
+    const title = document.querySelectorAll(".title")
+    const channelTitle = document.querySelectorAll(".channel-name")
 
-      tokenUtil.getToken(token,{ navigate })
+    if(index === 0 && title != null && title.length && channelTitle != null && channelTitle.length){
+      title.forEach((el,inc) => {
+        const url = el.dataset.setUrl
+        google.setElement(url,el,channelTitle[inc])
+      })
+    }
+   },[data])
 
-      videoUtil.getAll(setData)
-
-   },[])
 
 	return (
       <>  
@@ -65,16 +79,19 @@ const CoursePage = () => {
                      })
                      .map((id, index) => {
                         const linkVideo = `https://www.youtube.com/watch?v=${id.url}`
-                        const linkThumb = `https://img.youtube.com/vi/${id.url}/maxresdefault.jpg`
+                        // const linkThumb = `https://img.youtube.com/vi/${id.url}/maxresdefault.jpg`
+                        const linkThumb = `https://i.ytimg.com/vi/${id.url}/hqdefault.jpg`
                         const idVideo = `video-title-${index}`
 
                         const inpClassName = `input-file ip-${index}`
 
                         return (
                            <div className="course" key={index}>
-                              <a href={linkVideo} target="_blank">
+                              <a href={linkVideo} target="_blank" className="thumbnail-container">
                                  <img src={linkThumb} alt="thumbnail" className="thumbnail"/>
                               </a>
+                              <span className="title" id={"title-"+index} data-set-url={id.url}>Judul Tidak Tersedia</span>
+                              <span className="channel-name">Channel</span>
                               <div className={inpClassName} style={{
                                 display: "none"
                               }}>

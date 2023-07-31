@@ -21,7 +21,7 @@ const BtnLogout = ({size}) => {
 
 	return (
 		<span id="btn-logout" className={className} onClick={handleLogout}>
-			{ size === "large" ?  <i class="bi bi-box-arrow-right fs-5"></i> : <span className="">Logout</span> }
+			{ size === "large" ?  <i className="bi bi-box-arrow-right fs-5"></i> : <span className="">Logout</span> }
 		</span>
 	)
 }

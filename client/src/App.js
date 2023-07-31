@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
-import LoginPage from "./pages/login.jsx"
 import Course from "./pages/course.jsx"
+import LoginPage from "./pages/login.jsx"
 import Admin from "./pages/admin.jsx"
 
 function App () {

@@ -35,7 +35,7 @@ header {
 }
 
 .brand img {
-	width: calc(9vw + 3vh)
+	width: calc(9vw + 3vh);
 }
 
 .brand .txt-brand {
@@ -49,6 +49,7 @@ header {
 	background-color: #fff;
 	padding: 1.8rem;
 	margin: 1rem;
+	background-color: transparent;
 }
 
 .course-title {
@@ -65,7 +66,7 @@ header {
 	gap: 2.5rem 1rem;
 	justify-content: space-evenly;
 	align-items: flex-start;
-	padding: 1rem
+	padding: 1rem;
 }
 
 .scroller {
@@ -97,22 +98,25 @@ header {
 	display: flex;
 	flex-direction: column;
 	gap: 0.8rem;
-	justify-content: center;
-	align-items: center;
-	max-width: 300px;
-	height: 100%;
-	
+	justify-content: flex-start;
+	align-items: flex-start;
+	max-width: 290px;
+	padding: 3rem 1.5rem;
+	box-shadow: -7px 7px 9px rgba(0,0,0,0.15);
+	border-radius: 3px;
+	box-sizing: border-box;
+	background-color: #fff;
+}
+
+.thumbnail-container {
+	width: 100%;
 }
 
 .course img.thumbnail {
-	border-radius: 13px;
-	width: 300px;
-	height: 168.75px;
-	transition: .4s
-}
-
-.course img.thumbnail:hover {
-	transform: scale(1.035);
+	border-radius: 8px;
+	width: 100%;
+	transition: .4s;
+	background-color: aqua
 }
 
 h6.video-title {
@@ -121,6 +125,10 @@ h6.video-title {
 	font-size: 1.1rem;
 	font-weight: lighter;
 	font-family: arial
+}
+
+.channel-name {
+	font-weight: bold
 }
 
 .input-file {

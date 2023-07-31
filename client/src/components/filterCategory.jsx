@@ -32,7 +32,6 @@ const FilterCategory = ({data,setFilter,filter}) => {
 	}
 
 	const handleShowEl = event => {
-		console.log(show)
 		setShow(prev => !prev)
 	}
 
