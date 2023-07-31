@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 
 const videosModel = require("../models/videosModel.js")
-
 const getAccess = require("../utils/access.js")
 
 // connection to database
@@ -35,14 +34,18 @@ const videosController = {
 		}
 
 		try {
-
 			const newTags = tags.split(";").filter(el => el).map(el => el.trim().toLowerCase())
 
-			const payload = { url, linkTugas: googleForm, tags: newTags }
-	
+			const payload = {
+				url, 
+				linkTugas: googleForm, 
+				tags: newTags
+			}
+
 			const create = await videosModel.create(payload)
 			res.status(200).send({ message: "sukses menambahkan video" })
 		} catch (err) {
+			console.log(err)
 			if(err.code == 11000){
 				res.status(400).send({ message: "video sudah ada" })
 				return
