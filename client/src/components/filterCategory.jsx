@@ -2,7 +2,6 @@ import { useState } from "react"
 
 const FilterCategory = ({data,setFilter,filter}) => {
 
-	const [show,setShow] = useState(false)
 	const tags = []
 
 	const x = data.filter(el => el.tags.length).forEach(el => {
@@ -17,37 +16,30 @@ const FilterCategory = ({data,setFilter,filter}) => {
 	const handleClick = event => {
 		const iTarget = event.target.getAttribute("data-fc-i")
 
-		document.querySelectorAll(".filter-child").forEach((el,index) => {
+		document.querySelectorAll(".list-group-item.list-group-item-action").forEach((el,index) => {
 			if(iTarget == index){
-				el.classList.add("active")
 				if(index === 0){
 					setFilter(false)
 				}else{
 					setFilter(el.innerText)
 				}
-			}else{
-				el.classList.remove("active")
 			}
 		})
 	}
 
-	const handleShowEl = event => {
-		setShow(prev => !prev)
-	}
-
-	return (<div className="text-center my-4">
-		<button className="btn btn-primary" id="btn-show" onClick={handleShowEl}>
-			<span className="ms-2">{show === true ? "hide tags" : "show tags"}</span>
-		</button>
-
-		{
-			show === true &&
-				<div className="scroller my-3">
-					<span className="filter-child" onClick={handleClick} data-fc-i={0}>All</span>
-					{ tags.map((tag,index) => <span className="filter-child" key={index} onClick={handleClick} data-fc-i={index+1}>{tag}</span>) }
-				</div>
-				
-		}</div>)
+	return ( <>
+		<p className="d-inline-flex gap-1 mt-4">
+		  <a id="btn-tag" className="px-3 py-2 rounded btn-tag d-flex justify-content-center align-items-center bg-rainbow" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" href="#collapseExample">
+		  	<i className="bi bi-tag"></i>
+		  </a>
+		</p>
+		<div className="collapse" id="collapseExample">
+			<div className="list-group">
+				<span className="list-group-item list-group-item-action" data-fc-i={0} onClick={handleClick}>All</span>
+				{ tags.map((tag,index) => <span className="list-group-item list-group-item-action" key={index} onClick={handleClick} data-fc-i={index+1} data-fc-i={index+1}>{tag}</span>) }
+			</div>
+		</div>
+	</>)
 }
 
 export default FilterCategory

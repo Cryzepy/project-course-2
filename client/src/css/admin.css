@@ -24,35 +24,6 @@ body{
 	background: linear-gradient(115deg, #56d8e4 10%, #9f01ea 90%);
 }
 
-header {
-	background-color: #fff;
-	padding: 1.5rem;
-	margin: 1rem;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border-radius: 2px;
-	box-shadow: -8px 8px 13px rgba(0,0,0,0.2);
-	gap: 2.5rem;
-}
-
-.brand {
-	display: flex;
-	align-items: center;
-	gap: 1.5rem;
-}
-
-.brand img {
-	width: calc(9vw + 3vh)
-}
-
-.brand .txt-brand {
-	font-size: 1.6rem;
-	font-weight: bold;
-	color:  #9f01ea;
-	text-align: center;
-}
-
 main {
 	background-color: #fff;
 	padding: 1.5rem;

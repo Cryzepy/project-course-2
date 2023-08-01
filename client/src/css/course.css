@@ -16,47 +16,70 @@ body {
 	background: linear-gradient(115deg, #56d8e4 10%, #9f01ea 90%);
 }
 
-header {
-	background-color: #fff;
-	padding: 1.5rem;
-	margin: 1rem;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border-radius: 2px;
-	box-shadow: -8px 8px 13px rgba(0,0,0,0.2);
-	gap: 2.5rem;
-}
+.course-title, .bg-rainbow { 
+background: linear-gradient(124deg, #56d8e4, #9f01ea, #fff);
+background-size: 1800% 1800%;
 
-.brand {
-	display: flex;
-	align-items: center;
-	gap: 1.5rem;
-}
+-webkit-animation: rainbow 18s ease infinite;
+-z-animation: rainbow 18s ease infinite;
+-o-animation: rainbow 18s ease infinite;
+  animation: rainbow 18s ease infinite;}
 
-.brand img {
-	width: calc(9vw + 3vh);
+@-webkit-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
 }
-
-.brand .txt-brand {
-	font-size: 1.6rem;
-	font-weight: bold;
-	color:  #9f01ea;
-	text-align: center;
+@-moz-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
 }
-
-.courses-container {
-	background-color: #fff;
-	padding: 1.8rem;
-	margin: 1rem;
-	background-color: transparent;
+@-o-keyframes rainbow {
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
+}
+@keyframes rainbow { 
+    0%{background-position:0% 82%}
+    50%{background-position:100% 19%}
+    100%{background-position:0% 82%}
 }
 
 .course-title {
+	width: max-content;
+	border-radius: 0 .7rem .7rem 0;
+	cursor: pointer;
+	user-select: none;
+	box-shadow: 5px 6px 1px rgba(0,0,0,.25)
+}
+
+.btn-tag {
+	box-shadow: -2px 2px 3px rgba(255,255,255,1);
+	color: white;
+	text-shadow: 1px 1px 6px white
+}
+
+#collapseExample {
+	width: max-content;
+	right: 4.5rem;
+	position: absolute;
+	box-shadow: -7px 7px 5px rgba(255,255,255,0.7)
+}
+
+
+.list-group-item {
+	padding: .9rem 2rem;
+	cursor: pointer;
+	background-color: #9f01ea;
 	text-align: center;
-	font-size: 2rem;
-	text-transform: uppercase;
-	font-weight: bold;
+	color: white;
+	border: none;
+	border-bottom: 2px solid rgba(255,255,255,.2);
+	user-select: none;
+}
+
+.list-group-item:hover {
 	color: #9f01ea
 }
 
@@ -148,9 +171,6 @@ h6.video-title {
 
 .input-file > button:last-child {
 	width: 25%;
-}
-
-.submit-tugas {
 }
 
 @media only screen and (max-width: 576px){

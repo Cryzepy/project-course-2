@@ -12,6 +12,33 @@ code {
     monospace;
 }
 
+header {
+  background-color: #fff;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: -6px 6px 10px rgba(0,0,0,0.15);
+  gap: 2.5rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.brand img {
+  width: calc(9vw + 3vh);
+}
+
+.brand .txt-brand {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color:  #9f01ea;
+  text-align: center;
+}
+
 footer {
 	background-color: #fff;
 	text-align: center;
