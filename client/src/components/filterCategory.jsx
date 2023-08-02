@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const FilterCategory = ({data,setFilter,filter}) => {
 
@@ -15,8 +15,7 @@ const FilterCategory = ({data,setFilter,filter}) => {
 
 	const handleClick = event => {
 		const iTarget = event.target.getAttribute("data-fc-i")
-
-		document.querySelectorAll(".list-group-item.list-group-item-action").forEach((el,index) => {
+		document.querySelectorAll(".tag-select").forEach((el,index) => {
 			if(iTarget == index){
 				if(index === 0){
 					setFilter(false)
@@ -27,19 +26,17 @@ const FilterCategory = ({data,setFilter,filter}) => {
 		})
 	}
 
-	return ( <>
-		<p className="d-inline-flex gap-1 mt-4">
-		  <a id="btn-tag" className="px-3 py-2 rounded btn-tag d-flex justify-content-center align-items-center bg-rainbow" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" href="#collapseExample">
-		  	<i className="bi bi-tag"></i>
-		  </a>
-		</p>
-		<div className="collapse" id="collapseExample">
-			<div className="list-group">
-				<span className="list-group-item list-group-item-action" data-fc-i={0} onClick={handleClick}>All</span>
-				{ tags.map((tag,index) => <span className="list-group-item list-group-item-action" key={index} onClick={handleClick} data-fc-i={index+1} data-fc-i={index+1}>{tag}</span>) }
-			</div>
+	return (
+		<div className="dropdown">
+		  <button className="btn bg-rainbow text-light border-bottom border-start" type="button" data-bs-toggle="dropdown" aria-expanded="false" style={{ outline: "none", border: "none" }}>
+		    <i className="bi bi-tag"></i>
+		  </button>
+		  <ul className="dropdown-menu text-center">
+		    <li data-fc-i={0} onClick={handleClick} className="dropdown-item p-2 btn tag-select">All</li>
+			{ tags.map((tag,index) => <li data-fc-i={index+1} onClick={handleClick} className="dropdown-item p-2 btn tag-select" key={index}>{ tag }</li>) }
+		  </ul>
 		</div>
-	</>)
+	)
 }
 
 export default FilterCategory

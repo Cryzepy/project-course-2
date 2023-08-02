@@ -5,15 +5,33 @@ class GoogleInfo {
 		this.API_KEY2 = "AIzaSyBpvpH8TZJ23b4_vwk4OxtS7SLVh4lApqE"
 	}
 
-	setElement (url,title,channelTitle,description) {
+	setElement (url,setData,index) {
 		axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${url}&key=${this.API_KEY2}`)
 			.then(response => {
-				title.innerText = response.data.items[0].snippet.title
-				channelTitle.innerText = response.data.items[0].snippet.channelTitle
-				description.innerText = response.data.items[0].snippet.description
+				const payload = {
+					title : response.data.items[0].snippet.title,
+					channelTitle: response.data.items[0].snippet.channelTitle,
+					description: response.data.items[0].snippet.description
+				}
+
+				setData(prev => {
+					const temp = [...prev]
+					temp[index] = payload
+					return temp
+				})
 			})
 			.catch(err => {
-				console.log(err)
+				const payload = {
+					title : "Judul Tidak Tesedia",
+					channelTitle: "Channel Name",
+					description: "Deskripsi tidak tersedia"
+				}
+
+				setData(prev => {
+					const temp = [...prev]
+					temp[index] = payload
+					return temp
+				})
 			})
 	}
 }

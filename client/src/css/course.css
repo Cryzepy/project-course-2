@@ -54,42 +54,13 @@ background-size: 1800% 1800%;
 	box-shadow: 5px 6px 1px rgba(0,0,0,.25)
 }
 
-.btn-tag {
-	box-shadow: -2px 2px 3px rgba(255,255,255,1);
-	color: white;
-	text-shadow: 1px 1px 6px white
-}
-
-#collapseExample {
-	width: max-content;
-	right: 4.5rem;
-	position: absolute;
-	box-shadow: -7px 7px 5px rgba(255,255,255,0.7)
-}
-
-
-.list-group-item {
-	padding: .9rem 2rem;
-	cursor: pointer;
-	background-color: #9f01ea;
-	text-align: center;
-	color: white;
-	border: none;
-	border-bottom: 2px solid rgba(255,255,255,.2);
-	user-select: none;
-}
-
-.list-group-item:hover {
-	color: #9f01ea
-}
-
 .courses {
-	display: flex;
+/*	display: flex;
 	flex-wrap: wrap;
 	gap: 2.5rem 1rem;
 	justify-content: space-evenly;
 	align-items: flex-start;
-	padding: 1rem;
+	padding: 1rem;*/
 }
 
 .scroller {
@@ -115,62 +86,6 @@ background-size: 1800% 1800%;
 .filter-child.active {
 	color: #f2f2f2;
 	background-color: #606060
-}
-
-.course {
-	display: flex;
-	flex-direction: column;
-	gap: 0.8rem;
-	justify-content: flex-start;
-	align-items: flex-start;
-	max-width: 290px;
-	padding: 3rem 1.5rem;
-	box-shadow: -7px 7px 9px rgba(0,0,0,0.15);
-	border-radius: 3px;
-	box-sizing: border-box;
-	background-color: #fff;
-}
-
-.thumbnail-container {
-	width: 100%;
-}
-
-.course img.thumbnail {
-	border-radius: 8px;
-	width: 100%;
-	transition: .4s;
-	background-color: aqua
-}
-
-h6.video-title {
-	margin: 0;
-	padding: 0 .3rem;
-	font-size: 1.1rem;
-	font-weight: lighter;
-	font-family: arial
-}
-
-.channel-name {
-	font-weight: bold
-}
-
-.input-file {
-	display: flex;
-	align-items: center;
-	gap: 3px;
-	width: 100%;
-}
-
-.input-file .send-data {
-	width: 75%	
-}
-
-.input-file .send-data button {
-	width: 100%	
-}
-
-.input-file > button:last-child {
-	width: 25%;
 }
 
 @media only screen and (max-width: 576px){

@@ -27,6 +27,7 @@ const CoursePage = () => {
 
   const [data, setData] = useState([])
   const [filter,setFilter] = useState(false)
+  const [label,setLabel] = useState([])
 
    useEffect(() => {
       const token = getCookie("token")
@@ -37,27 +38,40 @@ const CoursePage = () => {
       index++
    },[])
 
-   useEffect(() => {
-
+  useEffect(() => {
     const title = document.querySelectorAll(".title")
-    const channelTitle = document.querySelectorAll(".channel-name")
-    const deskripsi = document.querySelectorAll(".deskripsi-video")
-
-    if(index === 0 && title != null && title.length && channelTitle != null && channelTitle.length && deskripsi != null && deskripsi.length){
+    const channelTitle = document.querySelectorAll(".channel")
+    const deskripsi = document.querySelectorAll(".deskripsi")
+    
+    if((title != null && channelTitle != null && deskripsi != null && !label.length) || (title.length != channelTitle.length || title.length != deskripsi.length || title.length != deskripsi.length)){
       title.forEach((el,inc) => {
         const url = el.dataset.setUrl
-        google.setElement(url,document.querySelector(`#title-${inc}`),document.querySelector(`#channel-name-${inc}`),document.querySelector(`#deskripsi-video-${inc}`))
+        google.setElement(url,setLabel,inc)
       })
     }
-   },[data])
 
+
+  })
+
+  function getvalue (obj,index,props) {
+
+    let result
+
+    try {
+      result = obj[index][props]
+    } catch {
+      result = false
+    }
+
+    return result
+  }
 
 	return (
       <> 
         <Navbar brand={"PKM-PM | Universitas Muhammadiyah Malang"} />
             <div className="container-fluid pb-5">
               <div className="row">
-                <div className="col p-0 m-0 pt-1">
+                <div className="col p-0 m-0 pt-1 mt-3 mt-lg-0">
                   <h2 className="course-title text-start fw-bold text-light bg-primary p-3">
                     COURSES : <span id="courseTitle">{filter === false ? "ALL" : filter.toUpperCase()}</span>
                  </h2>
@@ -72,13 +86,12 @@ const CoursePage = () => {
                 <div className="col">
                   { !data.length && (<span>Tidak ada video</span>) }
                   { data.length > 0 && (
-                    <div className="courses">
+                    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4 m-1">
                     {
                        data
                        .map((id, index) => {
                           const linkThumb = `https://i.ytimg.com/vi/${id.url}/hqdefault.jpg`
 
-                          const title_el = document.querySelector(`#title-${index}`)
                           const desc_el = document.querySelector(`#deskripsi-video-${index}`)
 
                           return (
@@ -88,19 +101,22 @@ const CoursePage = () => {
                               <Modal
                                 url={id.url}
                                 index={index} 
-                                title={ title_el && title_el.innerText } 
-                                deskripsi={ desc_el && desc_el.innerText } 
+                                title={ getvalue(label,index,"title") } 
+                                deskripsi={ getvalue(label,index,"description") } 
                                 linkTugas={id.linkTugas}
 
                               />
-                               <div className="course" key={index}>
+                              <div className="col" key={index}>
+                                <div className="card p-3" style={{ height: "100%" }}>
                                   <a data-bs-toggle="modal" data-bs-target={`#modal-video-${index}`} target="_blank" className="thumbnail-container">
-                                     <img src={linkThumb} alt="thumbnail" className="thumbnail"/>
+                                    <img src={ linkThumb } className="card-img-top" alt="thumbnail" style={{ cursor: "pointer" }} />
                                   </a>
-                                  <span className="title" id={"title-"+index} data-set-url={id.url}>Judul Tidak Tersedia</span>
-                                  <span id={`deskripsi-video-${index}`} className="deskripsi-video" style={{ display: "none" }}>Deskripsi Tidak Tersedia</span>
-                                  <span className="channel-name" id={`channel-name-${index}`}>Channel</span>
-                               </div>
+                                  <div className="card-body">
+                                    <h5 className="card-title fw-bold fs-6 channel">{ getvalue(label,index,"channelTitle") || "Youtube" }</h5>
+                                    <p className="card-text title" data-set-url={id.url}>{ getvalue(label,index,"title") || "Judul Tidak Tersedia" }</p>
+                                  </div>
+                                </div>
+                              </div>
                               </>
                             }
                             </>
