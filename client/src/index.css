@@ -45,5 +45,7 @@ footer {
 	font-size: .85rem;
 	position: fixed;
 	bottom: 0;
-	width: 100%
+	width: 100%;
+  right: 0;
+  left: 0
 }
