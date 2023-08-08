@@ -2,8 +2,8 @@ const Modal = ({url,index,title,deskripsi,linkTugas}) => {
 	const id = `modal-video-${index}`
 
 	return (
-		<div className="modal fade" id={id} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div className="modal-dialog modal-dialog-centered" style={{ overflowX: "hidden" }}>
+		<div className="modal fade mt-0 mb-0" id={id} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div className="modal-dialog modal-dialog-scrollable" style={{ overflowX: "hidden" }}>
 		    <div className="modal-content">
 		      <div className="modal-header">
 		        <h1 className="modal-title fs-5" id="exampleModalLabel">{ title ? title : "Judul tidak tersedia" }</h1>
