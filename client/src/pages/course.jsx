@@ -1,5 +1,4 @@
-import $ from "jquery"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import "../css/course.css"
@@ -107,7 +106,7 @@ const CoursePage = () => {
 
                               />
                               <div className="col" key={index}>
-                                <div className="card p-3" style={{ height: "100%" }}>
+                                <div className="card p-3" style={{ height: "100%" }} data-aos="fade-up">
                                   <a data-bs-toggle="modal" data-bs-target={`#modal-video-${index}`} target="_blank" className="thumbnail-container">
                                     <img src={ linkThumb } className="card-img-top" alt="thumbnail" style={{ cursor: "pointer" }} />
                                   </a>
