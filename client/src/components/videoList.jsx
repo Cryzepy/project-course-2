@@ -66,19 +66,19 @@ const VideoList = ({videos,setVideos}) => {
                         videos.map((video,index) => {
                           return (
                             <tr key={index}>
-                                <th scope="row">{index + 1}</th>
-                                <td>{video.url}</td>
-                                {
-                                  video.linkTugas ? 
-                                    <td className="d-none d-md-table-cell"><a href={video.linkTugas} target='_blank'>{video.linkTugas}</a></td> :
-                                    <td className="d-none d-md-table-cell">tidak ada tugas</td>
-                                }
-                                <td>
-                                   <button className="btn btn-danger" onClick={function(){
-                                    videoUtil.delete(video.url,setVideos)
-                                   }}>delete</button>
-                                </td>
-                              </tr>
+                              <th scope="row">{index + 1}</th>
+                              <td>{video.url}</td>
+                              {
+                                video.linkTugas ? 
+                                  <td className="d-none d-md-table-cell"><a href={video.linkTugas} target='_blank'>{video.linkTugas}</a></td> :
+                                  <td className="d-none d-md-table-cell">tidak ada tugas</td>
+                              }
+                              <td>
+                                 <button className="btn btn-danger" onClick={function(){
+                                  videoUtil.delete(video.url,setVideos)
+                                 }}>delete</button>
+                              </td>
+                            </tr>
                           )
                         })
                       }
