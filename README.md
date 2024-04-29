@@ -21,4 +21,4 @@
       - membuat tugas yang tersedia
   
 # Cara Menggunakan
-anda dapat menggunakan dan login sebagai user dengan username `sample_user` dan password `00000000`
+anda dapat menggunakan dan <a href="https://project-course-2-cli.vercel.app/" target="_blank">login</a> sebagai user dengan username `sample_user` dan password `00000000`
