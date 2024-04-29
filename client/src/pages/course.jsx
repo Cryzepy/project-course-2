@@ -65,6 +65,17 @@ const CoursePage = () => {
     return result
   }
 
+  function pretifyFilterLabel(label){
+    const MAX_LENGTH = 21
+
+    if(label.length <= MAX_LENGTH){
+      return label
+    }else{
+      return label.substring(0,MAX_LENGTH).concat("...")
+    }
+
+  }
+
 	return (
       <> 
         <Navbar brand={"PKM-PM | Universitas Muhammadiyah Malang"} />
@@ -72,7 +83,7 @@ const CoursePage = () => {
               <div className="row">
                 <div className="col p-0 m-0 pt-1 mt-3 mt-lg-0">
                   <h2 className="course-title text-start fw-bold text-light bg-primary p-3">
-                    COURSES : <span id="courseTitle">{filter === false ? "ALL" : filter.toUpperCase()}</span>
+                    COURSES : <span id="courseTitle">{filter === false ? "ALL" : pretifyFilterLabel(filter).toUpperCase()}</span>
                  </h2>
                 </div>
               </div>
