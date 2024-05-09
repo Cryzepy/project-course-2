@@ -2,7 +2,7 @@
 <h5>website ini dibuat untuk <a href="https://cryzepy.github.io/landing-page-project-course-2/">PKM-PM mahasiswa Universitas Muhammadiyah Malang</a> dengan Menerapkan MERN Stack untuk pembuatan website.
 
 # Cara menggunakan
-- gunakan `sample_user` sebagai username dan `00000000` sebagai password untuk <a href="https://project-course-2-cli.vercel.app/">login</a> dengan role user
+- gunakan `sample_user` sebagai username dan `00000000` sebagai password untuk <a href="https://project-course-2-cli.vercel.app/" target="_blank">login</a> dengan role user
 - user bisa login degan menggunakan role `admin` atau `user`
   - batasan dan akses role `admin`
 
