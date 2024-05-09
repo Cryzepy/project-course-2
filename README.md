@@ -1,5 +1,5 @@
 # Tentang Website
-<h5>website ini dibuat untuk PKM-PM mahasiswa Universitas Muhammadiyah Malang dengan Menerapkan MERN Stack, <a href="https://cryzepy.github.io/landing-page-project-course-2/">klik</a> untuk melihat landing page</h5>
+<h5>website ini dibuat untuk <a href="https://cryzepy.github.io/landing-page-project-course-2/">PKM-PM mahasiswa Universitas Muhammadiyah Malang</a> dengan Menerapkan MERN Stack untuk pembuatan website.
 
 # Role
 - user bisa login degan memiliki role `admin` atau `user`
